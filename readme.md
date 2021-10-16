@@ -1,15 +1,15 @@
-encripta
+#Encripta
 
 	envia chave publica
 	recebe chave publica
 	usa chave publica
 	
-desencripta
+#Desencripta
 
 	usa chave privada
 
 
-trata email:
+#Trata email:
 
 	se tiver email pedindo chat
 		responde com chave criptografica
@@ -22,7 +22,7 @@ trata email:
 		checa lista de amigos:
 			faz conexao p2p ou ignora
 
-servidor (quem pediu conexao)
+#Servidor (quem pede conexao)
 
 	envia email criptografado para cliente
 		abre servidor com ip:porta
@@ -43,9 +43,10 @@ servidor (quem pediu conexao)
 		
 	fecha conexao
 		envia sinal de fim
+        encerra servidor
 	
 
-cliente (quem faz a conexao)
+#Cliente (quem faz a conexao)
 
 	Le email 
 		na pasta mimochat:
@@ -63,8 +64,7 @@ cliente (quem faz a conexao)
 		testa conexao
 			responde ok pro servidor
 			ping
-	
-			
+
 	fecha conexao
 		envia sinal de fim
-
+        fecha cliente
