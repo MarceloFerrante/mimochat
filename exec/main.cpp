@@ -4,7 +4,7 @@
 using namespace std;
 
 int main() {
-    cout << mimochat::teste(12) << endl;
+    cout << mimochat::conecta(12) << endl;
     return 0;
 
 }

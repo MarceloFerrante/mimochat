@@ -4,7 +4,7 @@
 #ifndef MIMOCHAT_EMAIL_H
 #define MIMOCHAT_EMAIL_H
 namespace mimochat {
-    int teste(int x);
+    int conecta(int x);
 }
 
 #endif //MIMOCHAT_EMAIL_H

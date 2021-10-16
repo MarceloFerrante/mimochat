@@ -7,6 +7,6 @@ TEST_CASE( "Greeting random people" ) {
     using namespace mimochat;
 
     SECTION("Name parameter") {
-        REQUIRE(teste(12) == 12);
+        REQUIRE(conecta(12) == 12);
         }
 }
