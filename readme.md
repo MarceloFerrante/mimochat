@@ -1,27 +1,33 @@
-Encripta
+encripta
+
 	envia chave publica
 	recebe chave publica
 	usa chave publica
 	
 desencripta
+
 	usa chave privada
 
 
-trata email:	
+trata email:
+
 	se tiver email pedindo chat
 		responde com chave criptografica
 			opcional: autoassinatura do email com chave criptografica 
 			opcional: modo secreto, só responde se na lista de amigos
 		aguarda email com ip:porta
+		
 	se tiver email com ip:porta
 		apaga email
 		checa lista de amigos:
 			faz conexao p2p ou ignora
 
 servidor (quem pediu conexao)
+
 	envia email criptografado para cliente
 		abre servidor com ip:porta
 		envia email com ip:porta pedindo chat
+		
 	conexao p2p
 		aguarda sinal no ip:porta
 			gera chave criptografica
@@ -35,15 +41,17 @@ servidor (quem pediu conexao)
 		testa conexao
 			ping
 		
-	fechando conexao
+	fecha conexao
 		envia sinal de fim
 	
 
 cliente (quem faz a conexao)
+
 	Le email 
 		na pasta mimochat:
 		trata emails
 		apaga emails
+		
 	conexão p2p
 		gera chave criptografica
 		envia sinal pro ip:porta
@@ -55,5 +63,8 @@ cliente (quem faz a conexao)
 		testa conexao
 			responde ok pro servidor
 			ping
-		
+	
+			
+	fecha conexao
+		envia sinal de fim
 
