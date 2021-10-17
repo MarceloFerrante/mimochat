@@ -4,6 +4,7 @@
 #ifndef MIMOCHAT_EMAIL_H
 #define MIMOCHAT_EMAIL_H
 namespace mimochat {
+    int enviaChave();
     int conecta(int x);
 }
 

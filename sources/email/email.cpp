@@ -4,4 +4,7 @@ namespace mimochat {
     int conecta(int  x) {
         return x;
     }
+    int enviaChave(){
+        return 0;
+    }
 }

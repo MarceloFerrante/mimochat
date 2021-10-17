@@ -49,7 +49,7 @@
 #Cliente (quem faz a conexao)
 
 	Le email 
-		na pasta mimochat:
+		na pasta encripta:
 		trata emails
 		apaga emails
 		
