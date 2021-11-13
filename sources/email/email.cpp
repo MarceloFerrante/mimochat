@@ -2,6 +2,7 @@
 #include "email.h"
 
 namespace mimochat {
+    using namespace std;
     int conecta(int  x) {
         return x;
     }
