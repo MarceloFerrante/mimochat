@@ -68,3 +68,6 @@
 	fecha conexao
 		envia sinal de fim
         fecha cliente
+
+#Threads
+    Usar theads pra testar conexões com clientes em paralelo
