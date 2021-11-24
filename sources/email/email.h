@@ -4,12 +4,16 @@
 #ifndef MIMOCHAT_EMAIL_H
 #define MIMOCHAT_EMAIL_H
 
-namespace mimochat {
-    int enviaChave();
-//    int conecta(int x);
+#include "amigos/listaAmigos.h"
 
-    template< typename T>
-    T conecta(T x);
+namespace mimochat {
+
+//    template< typename T1, typename T2>
+//    T2 conecta(T1 d);
+
+    int enviaChave();
+    int conecta(int x);
+    std::string conecta(listaAmigos::data d);
 }
 
 #endif //MIMOCHAT_EMAIL_H

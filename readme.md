@@ -9,24 +9,24 @@
 	usa chave privada
 
 
-#Trata email:
+#Trata usuario:
 
-	se tiver email pedindo chat
+	se tiver usuario pedindo chat
 		responde com chave criptografica
-			opcional: autoassinatura do email com chave criptografica 
+			opcional: autoassinatura do usuario com chave criptografica 
 			opcional: modo secreto, só responde se na lista de amigos
-		aguarda email com ip:porta
+		aguarda usuario com ip:porta
 		
-	se tiver email com ip:porta
-		apaga email
+	se tiver usuario com ip:porta
+		apaga usuario
 		checa lista de amigos:
 			faz conexao p2p ou ignora
 
 #Servidor (quem pede conexao)
 
-	envia email criptografado para cliente
+	envia usuario criptografado para cliente
 		abre servidor com ip:porta
-		envia email com ip:porta pedindo chat
+		envia usuario com ip:porta pedindo chat
 		
 	conexao p2p
 		aguarda sinal no ip:porta
@@ -48,7 +48,7 @@
 
 #Cliente (quem faz a conexao)
 
-	Le email 
+	Le usuario 
 		na pasta encripta:
 		trata emails
 		apaga emails

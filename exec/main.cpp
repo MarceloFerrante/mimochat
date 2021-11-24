@@ -1,45 +1,50 @@
 #include <iostream>
-#include <email/email.h>
+#include <queue>
 #include <encripta/encripta.h>
 #include "amigos/listaAmigos.h"
-#include <queue>
-using namespace std;
 
 int main() {
-    queue<listaAmigos::data> amigos;
+    using namespace std;
+
+
+    //lista de amigos
+    vector<listaAmigos::data> amigos;
+
     listaAmigos::data local;
-
-    local.email.endereço = "email@ab.com";
-    local.email.usuario = "amigo 1";
-    local.ip.ipv4 = "192.168.0.100";
-    amigos.push(local);
-
-    local.email.endereço = "email@cd.com";
-    local.email.usuario = "amigo 2";
-    local.ip.ipv4 = "192.168.0.200";
-
-    amigos.push(local);
-
-    listaAmigos::data temporario = amigos.front();
-    string nome = temporario.email.usuario;
-    string email = temporario.email.endereço;
-    string ipv4 = temporario.ip.ipv4;
-    cout << nome <<'\n' << email <<'\n' << ipv4 <<'\n' << endl;
-
-    amigos.pop();
-
-    temporario = amigos.front();
-    nome = temporario.email.usuario;
-    email = temporario.email.endereço;ipv4 = temporario.ip.ipv4;
-
-    cout << nome <<'\n' << email <<'\n' << ipv4 <<'\n' << endl;
+    //popula lista
+    for (int x = 0; x < 5; ++x){
+        local.usuario.email = "usuario@ab.com";
+        local.usuario.nome = "amigo " + to_string(x);
+        local.ip.ipv4 = "192.168.0.100";
+        local.chave.publica = encripta::random_string(50);
+        local.chave.privada = local.chave.publica;
+        local.mensagem.inicial = "Mensagem de teste " + to_string(x);
+        amigos.push_back(local); // push pra popular
+    }
 
 
-//    mimochat::conecta(nome); //TODO corrigir template e renomear o namespace
+    //teste de impressão
+    std::queue<listaAmigos::data> q; //TODO usar priority_queue para ordem alfabetica. Tem que fazer overload de operadoress
 
-//    cout << mimochat::conecta(12) << endl;
+    for(auto& n : amigos) //TODO cria queue em ordem alfabetica (ver https://en.cppreference.com/w/cpp/container/priority_queue)
+        q.emplace(n);
+
+    while(!q.empty()) {
+
+        listaAmigos::data temp_data = q.front();
+
+        std::cout << temp_data.usuario.nome << '\n';
+        cout << "Chave:       " << temp_data.chave.publica << endl;
+        cout << "Inicial:     " << temp_data.mensagem.inicial << endl;
 
 
-    encripta::enviaChave();
+        temp_data.mensagem.cifrada = encripta::cifraMensagem(temp_data.mensagem.inicial, local);
+        cout << "Cifrada:     " << temp_data.mensagem.cifrada << endl;
+
+        temp_data.mensagem.decifrada = encripta::decifraMensagem(temp_data.mensagem.cifrada, local);
+        cout << "Decifrada:   " <<  temp_data.mensagem.decifrada << endl << endl;
+
+        q.pop();
+    }
     return 0;
 }

@@ -6,12 +6,13 @@
 #define MIMOCHAT_LISTAAMIGOS_H
 
 #include <iostream>
+#include <vector>
 namespace listaAmigos {
     using namespace std;
 
-    struct emailData {
-        string  usuario,
-                endereço,
+    struct pessoa {
+        string  nome,
+                email,
                 corpo;
     };
 
@@ -25,12 +26,23 @@ namespace listaAmigos {
                 ipv4;
     };
 
+    struct carga{
+        string inicial,
+            cifrada,
+            decifrada;
+
+    };
+
     struct data {
-        emailData email;
+        pessoa usuario;
         chaves chave;
         rede ip;
+        carga mensagem;
     };
-}
 
+    void imprimeNomes(vector<data> &d);
+    template<typename T>
+    void print_queue(T q) ;
+}
 
 #endif //MIMOCHAT_LISTAAMIGOS_H
