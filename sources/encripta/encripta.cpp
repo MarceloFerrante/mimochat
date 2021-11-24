@@ -4,6 +4,7 @@
 #include <random>
 //#include <crypto++/sha.h>
 //#include <botan-2/botan/aes.h>
+//#include "boost/asio.hpp"
 
 namespace encripta {
     int enviaChave(){
@@ -69,6 +70,4 @@ namespace encripta {
 
         return random_string;
     }
-
-
 }
