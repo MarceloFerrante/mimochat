@@ -12,15 +12,23 @@
 namespace listaAmigos {
 
 
-    void imprimeNomes(vector<listaAmigos::data> &amigos) {
 
+    void ordenaAlfabetico(vector<listaAmigos::data> &amigos) {
         sort(amigos.begin(), amigos.end(),
              [](listaAmigos::data a, listaAmigos::data b) { return a.usuario.nome < b.usuario.nome; }); //mudar de lugar
+    }
+
+    void ordenaEmail(vector<listaAmigos::data> &amigos) {
+        sort(amigos.begin(), amigos.end(),
+             [](listaAmigos::data a, listaAmigos::data b) { return a.usuario.email < b.usuario.email; }); //mudar de lugar
+    }
+
+    void imprimeNomes(vector<listaAmigos::data> &amigos) {
 
         //teste de impressão
         std::queue<listaAmigos::data> q;
 
-        for (auto &n: amigos) //TODO cria q em ordem alfabetica (ver https://en.cppreference.com/w/cpp/container/priority_queue)
+        for (auto &n: amigos) //TODO desnescessário
             q.emplace(n);
 
         while (!q.empty()) {

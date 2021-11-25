@@ -41,7 +41,8 @@ namespace listaAmigos {
     };
 
     void imprimeNomes(vector<data> &d);
-
+    void ordenaAlfabetico(vector<listaAmigos::data> &amigos);
+    void ordenaEmail(vector<listaAmigos::data> &amigos);
     template<class T>
     int imprimeQueue(T q) ;
 }
