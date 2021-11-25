@@ -2,7 +2,7 @@
 #define ENCRIPTA_H
 
 #include <string>
-#include "amigos/listaAmigos.h"
+#include "listas/amigos.h"
 
 namespace encripta{
     int enviaChave();

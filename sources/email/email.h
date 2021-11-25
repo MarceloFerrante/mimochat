@@ -4,7 +4,7 @@
 #ifndef MIMOCHAT_EMAIL_H
 #define MIMOCHAT_EMAIL_H
 
-#include "amigos/listaAmigos.h"
+#include "listas/amigos.h"
 
 namespace mimochat {
 

@@ -5,7 +5,7 @@
 #ifndef MIMOCHAT_CLIENTE_H
 #define MIMOCHAT_CLIENTE_H
 
-#include "amigos/listaAmigos.h"
+#include "listas//amigos.h"
 int enviaMensagem(listaAmigos::data& d);
 
 #endif //MIMOCHAT_CLIENTE_H

@@ -2,8 +2,8 @@
 // Created by marcelo on 13/11/2021.
 //
 
-#ifndef MIMOCHAT_LISTAAMIGOS_H
-#define MIMOCHAT_LISTAAMIGOS_H
+#ifndef MIMOCHAT_AMIGOS_H
+#define MIMOCHAT_AMIGOS_H
 
 #include <iostream>
 #include <vector>
@@ -45,4 +45,4 @@ namespace listaAmigos {
     void print_queue(T q) ;
 }
 
-#endif //MIMOCHAT_LISTAAMIGOS_H
+#endif //MIMOCHAT_AMIGOS_H

@@ -1,13 +1,13 @@
 #include <iostream>
 #include <queue>
-#include <encripta/encripta.h>
-#include "amigos/listaAmigos.h"
+#include <cliente/encripta.h>
+#include "listas/amigos.h"
 
 int main() {
     using namespace std;
 
 
-    //lista de amigos
+    //lista de listas
     vector<listaAmigos::data> amigos;
 
     listaAmigos::data local;
@@ -46,5 +46,6 @@ int main() {
 
         q.pop();
     }
+    encripta::enviaChave();
     return 0;
 }

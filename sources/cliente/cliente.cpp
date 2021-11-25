@@ -40,18 +40,17 @@ namespace net = boost::asio;            // from <boost/asio.hpp>
 namespace ssl = boost::asio::ssl;       // from <boost/asio/ssl.hpp>
 using tcp = boost::asio::ip::tcp;       // from <boost/asio/servidor/tcp.hpp>
 
-#include "amigos/listaAmigos.h"
+#include "listas/amigos.h"
 
 // Sends a WebSocket message and prints the response
 int enviaMensagem(listaAmigos::data& d)
-//int main(int argc, char** argv)
 {
 
     try
     {
-        std::string host = d.servidor.ipv4;
-        auto const  port = d.servidor.porta;
-        auto const  text = d.mensagem.inicial;
+        std::string& host = d.servidor.ipv4;
+        auto const&  port = d.servidor.porta;
+        auto const&  text = d.mensagem.inicial;
 
         // The io_context is required for all I/O
         net::io_context ioc;

@@ -1,5 +1,5 @@
 #include "encripta.h"
-#include "amigos/listaAmigos.h"
+#include "listas/amigos.h"
 #include <string>
 #include <random>
 

@@ -3,7 +3,7 @@ project(mimochat LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-option(MIMOCHAT_BUILD_TESTS "Build tests" ON)
+option(MIMOCHAT_BUILD_TESTS "Build tests" OFF)
 option(MIMOCHAT_BUILD_EXEC "Build exec" ON)
 
 add_subdirectory(sources)

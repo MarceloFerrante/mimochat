@@ -2,7 +2,7 @@
 // Created by marcelo on 13/11/2021.
 //
 
-#include "listaAmigos.h"
+#include "amigos.h"
 #include <functional>
 #include <queue>
 #include <vector>

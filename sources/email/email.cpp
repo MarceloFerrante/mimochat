@@ -1,6 +1,9 @@
+
+
+
 #include <iostream>
 #include "email.h"
-#include "amigos/listaAmigos.h"
+#include "listas/amigos.h"
 namespace mimochat {
 
     int conecta(int x){
