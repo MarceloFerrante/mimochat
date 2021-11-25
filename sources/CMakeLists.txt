@@ -7,7 +7,8 @@ target_include_directories(email PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 add_library(encripta
         encripta/encripta.h
         encripta/encripta.cpp
-        )
+        encripta/cliente.cpp
+        encripta/cliente.h)
 target_include_directories(encripta PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_library(amigos

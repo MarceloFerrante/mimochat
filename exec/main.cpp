@@ -15,7 +15,7 @@ int main() {
     for (int x = 0; x < 5; ++x){
         local.usuario.email = "usuario@ab.com";
         local.usuario.nome = "amigo " + to_string(x);
-        local.ip.ipv4 = "192.168.0.100";
+        local.servidor.ipv4 = "192.168.0.100";
         local.chave.publica = encripta::random_string(50);
         local.chave.privada = local.chave.publica;
         local.mensagem.inicial = "Mensagem de teste " + to_string(x);

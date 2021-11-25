@@ -8,7 +8,7 @@ namespace mimochat {
     }
 
     std::string conecta(listaAmigos::data d){
-        return d.ip.ipv4; // TODO conectar rede com ipv4
+        return d.servidor.ipv4; // TODO conectar rede com ipv4
     }
 
 //

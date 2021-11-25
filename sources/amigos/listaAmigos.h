@@ -22,8 +22,8 @@ namespace listaAmigos {
     };
 
     struct rede {
-        string  ipv6,
-                ipv4;
+        string  ipv4;
+        string  porta;
     };
 
     struct carga{
@@ -36,7 +36,7 @@ namespace listaAmigos {
     struct data {
         pessoa usuario;
         chaves chave;
-        rede ip;
+        rede servidor;
         carga mensagem;
     };
 
