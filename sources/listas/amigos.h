@@ -40,11 +40,9 @@ namespace listaAmigos {
         carga mensagem;
     };
 
-    void imprimeNomes(vector<data> &d);
+    void imprimeNomes(vector<listaAmigos::data> &amigos);
     void ordenaAlfabetico(vector<listaAmigos::data> &amigos);
     void ordenaEmail(vector<listaAmigos::data> &amigos);
-    template<class T>
-    int imprimeQueue(T q) ;
 }
 
 #endif //MIMOCHAT_AMIGOS_H

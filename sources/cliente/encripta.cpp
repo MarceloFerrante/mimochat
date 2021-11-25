@@ -4,17 +4,6 @@
 #include <random>
 
 namespace encripta {
-    int enviaChave(){
-        return 0;
-    }
-
-    int recebeChave() {
-        return 0;
-    }
-
-    std::string usaChave(listaAmigos::data) {
-        return 0;
-    }
 
     /* TODO olhar:
      * https://www.thecrazyprogrammer.com/2017/03/rsa-algorithm.html
