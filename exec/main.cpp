@@ -32,7 +32,7 @@ int main() {
     amigos.push_back(local);
 
     listaAmigos::ordenaAlfabetico(amigos);
-//    listaAmigos::ordenaEmail(amigos);
+    listaAmigos::ordenaEmail(amigos);
     listaAmigos::imprimeTudo(amigos);
 //
 //    listaAmigos::ordenaEmail(amigos);

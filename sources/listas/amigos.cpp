@@ -14,7 +14,7 @@ namespace listaAmigos {
 
     // ver https://stackoverflow.com/questions/33379846/case-insensitive-sorting-of-an-array-of-strings
     //     https://en.cppreference.com/w/cpp/algorithm/lexicographical_compare
-    void ordenaAlfabetico(vector<listaAmigos::data> &amigos) {
+    void ordenaAlfabetico(vector<listaAmigos::data> &amigos) { //TODO fzer template para ordenar
         sort(
                 amigos.begin(),
                 amigos.end(),
@@ -31,8 +31,19 @@ namespace listaAmigos {
     }
 
     void ordenaEmail(vector<listaAmigos::data> &amigos) {
-        sort(amigos.begin(), amigos.end(),
-             [](listaAmigos::data &a, listaAmigos::data &b) { return a.usuario.email < b.usuario.email; }); //TODO não tá ordenando
+        sort(
+                amigos.begin(),
+                amigos.end(),
+                [](listaAmigos::data &a, listaAmigos::data &b){
+                    return lexicographical_compare(
+                            a.usuario.email.begin(), a.usuario.email.end(),
+                            b.usuario.email.begin(), b.usuario.email.end(),
+                            [](const char& char1, const char& char2) {
+                                return tolower(char1) < tolower(char2);
+                            }
+                    );
+                }
+        );
     }
 
     void imprimeTudo(vector<listaAmigos::data> &amigos) {
