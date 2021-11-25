@@ -3,33 +3,44 @@
 //
 
 #include "amigos.h"
+#include "cliente/encripta.h"
 #include <functional>
 #include <queue>
 #include <vector>
 #include <iostream>
 
 namespace listaAmigos {
-//    using namespace std;
 
-    //lista nomes em ordem alfabetica
 
-    template<typename T>
-    void print_queue(T q) { //passa uma copia do queue pra imprimir
-        while(!q.empty()) {
+    void imprimeNomes(vector<listaAmigos::data> &amigos) {
 
-            listaAmigos::data d = q.top();
-            std::cout << d.usuario.nome << ' ';
+        sort(amigos.begin(), amigos.end(),
+             [](listaAmigos::data a, listaAmigos::data b) { return a.usuario.nome < b.usuario.nome; }); //mudar de lugar
+
+        //teste de impressão
+        std::queue<listaAmigos::data> q;
+
+        for (auto &n: amigos) //TODO cria q em ordem alfabetica (ver https://en.cppreference.com/w/cpp/container/priority_queue)
+            q.emplace(n);
+
+        while (!q.empty()) {
+
+            listaAmigos::data& temp_data = q.front();
+
+            std::cout << temp_data.usuario.nome << '\n';
+            std::cout << temp_data.usuario.email << '\n';
+            cout << "Chave:       " << temp_data.chave.publica << endl;
+            cout << "Inicial:     " << temp_data.mensagem.inicial << endl;
+
+
+            temp_data.mensagem.cifrada = encripta::cifraMensagem(temp_data, "");
+            cout << "Cifrada:     " << temp_data.mensagem.cifrada << endl;
+
+            std::string cifrada = temp_data.mensagem.cifrada;
+            temp_data.mensagem.decifrada = encripta::decifraMensagem(temp_data, temp_data.mensagem.cifrada);
+            cout << "Decifrada:   " << temp_data.mensagem.decifrada << endl << endl;
+
             q.pop();
         }
-        std::cout << '\n';
     }
-
-//    void imprimeNomes( vector<listaAmigos::data> &containerGeral){
-
-//        std::priority_queue<listaAmigos::data> q;
-
-//            for (auto n: containerGeral)
-//                q.push(n);
-//    }
-
 }

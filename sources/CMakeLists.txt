@@ -8,7 +8,9 @@ add_library(cliente
         cliente/encripta.h
         cliente/encripta.cpp
         cliente/cliente.cpp
-        cliente/cliente.h cliente/servidor.cpp cliente/servidor.h)
+        cliente/cliente.h
+        cliente/servidor.cpp
+        cliente/servidor.h)
 target_include_directories(cliente PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_library(listas

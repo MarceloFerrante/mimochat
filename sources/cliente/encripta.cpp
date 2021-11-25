@@ -24,8 +24,11 @@ namespace encripta {
      * https://github.com/weidai11/cryptopp
      * https://github.com/weidai11/cryptopp/releases/tag/CRYPTOPP_8_6_0
      */
-    std::string cifraMensagem( std::string& mensagem, listaAmigos::data& d ) {
-        std::string mensagemCifrada = mensagem; //TODO  alocar apenas tamanho da mensagem cifrada, não copiar
+    std::string cifraMensagem(listaAmigos::data& d, std::string mensagem = "")
+    {
+        if (mensagem.empty())
+            mensagem = d.mensagem.inicial;
+        std::string mensagemCifrada = mensagem; //TODO  alocar apenas espaço da mensagem cifrada, sem copiar
 
         const std::string chave = d.chave.privada;
 
@@ -36,8 +39,12 @@ namespace encripta {
         return mensagemCifrada;
     }
 
-    std::string decifraMensagem( std::string& mensagem, listaAmigos::data& d ) {
-        std::string mensagemCifrada = mensagem; //TODO  alocar apenas tamanho da mensagem cifrada, não copiar
+    std::string decifraMensagem(listaAmigos::data& d, std::string mensagem = "")
+    {
+        if (mensagem.empty())
+        mensagem = d.mensagem.inicial;
+        std::string mensagemCifrada = mensagem; //TODO  alocar apenas espaço da mensagem cifrada, sem copiar
+
 
         const std::string chave = d.chave.privada;
 

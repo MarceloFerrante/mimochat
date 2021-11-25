@@ -1,6 +1,3 @@
-
-
-
 #include <iostream>
 #include "email.h"
 #include "listas/amigos.h"

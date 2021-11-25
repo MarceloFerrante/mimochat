@@ -23,7 +23,7 @@ namespace listaAmigos {
 
     struct rede {
         string  ipv4;
-        string  porta;
+        u_int16_t porta;
     };
 
     struct carga{
@@ -41,8 +41,9 @@ namespace listaAmigos {
     };
 
     void imprimeNomes(vector<data> &d);
-    template<typename T>
-    void print_queue(T q) ;
+
+    template<class T>
+    int imprimeQueue(T q) ;
 }
 
 #endif //MIMOCHAT_AMIGOS_H
