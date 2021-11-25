@@ -7,13 +7,14 @@
 
 #include <iostream>
 #include <vector>
+
+
 namespace listaAmigos {
     using namespace std;
 
     struct pessoa {
         string  nome,
-                email,
-                corpo;
+                email;
     };
 
     struct chaves {
@@ -43,6 +44,52 @@ namespace listaAmigos {
     void imprimeTudo(vector<listaAmigos::data> &amigos);
     void ordenaAlfabetico(vector<listaAmigos::data> &amigos);
     void ordenaEmail(vector<listaAmigos::data> &amigos);
+
+    class bancoDeDados{ //TODO Converter dados pra esta classe
+    public:
+        void imprimeNome(vector<data> &bancoInterno);
+        void imprimeEmail(vector<data> &bancoInterno);
+        void ordenaNomes(vector<data> &bancoInterno);
+        void ordenaEmail(vector<data> &bancoInterno);
+        void imprimeTudo(vector<data> &bancoInterno);
+        void adicionaContato(string nome, string email = "@"){
+            listaAmigos::data local;
+            local.usuario.nome = nome;
+            local.usuario.email = email;
+//            bancoInterno.push_back(local);
+        }
+
+    private:
+        struct chaves {
+            string  publica,
+                    privada;
+        };
+
+        struct rede {
+            string  ipv4;
+            u_int16_t porta;
+        };
+
+        struct texto{ //TODO desnescessãrio?
+            string simples,
+                    cifrado;
+
+        };
+
+        struct identidade {
+            string  nome,
+                    email;
+        };
+
+        struct dados { //TODO fazer classe
+            identidade id;
+            chaves chave;
+            rede servidor;
+            texto mensagem;
+        };
+
+        vector<dados> bancoInterno;
+    };
 }
 
 #endif //MIMOCHAT_AMIGOS_H

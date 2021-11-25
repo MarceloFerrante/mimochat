@@ -5,13 +5,13 @@
 #include "listas/amigos.h"
 #include "cliente/cliente.h"
 #include "cliente/servidor.h"
-
+#include "BD.h"
 int main() {
     using namespace std;
 
 
-    //lista de pessoas
-    vector<listaAmigos::data> amigos;
+    //lista de bancoDeDados
+    vector<listaAmigos::data> pessoas;
 
     listaAmigos::data local;
     //popula lista
@@ -22,21 +22,30 @@ int main() {
         local.chave.publica = encripta::random_string(16);
         local.chave.privada = local.chave.publica;
         local.texto.inicial = "Mensagem de teste " + to_string(x);
-        amigos.push_back(local); // push pra popular
+        pessoas.push_back(local); // push pra popular
     }
 
     local.usuario.nome = "Carlos";
-    amigos.push_back(local);
+    pessoas.push_back(local);
 
     local.usuario.nome = "Amaral";
-    amigos.push_back(local);
-
-    listaAmigos::ordenaAlfabetico(amigos);
-    listaAmigos::ordenaEmail(amigos);
-    listaAmigos::imprimeTudo(amigos);
+    pessoas.push_back(local);
 //
-//    listaAmigos::ordenaEmail(amigos);
-//    listaAmigos::imprimeTudo(amigos);
+//    listaAmigos::ordenaNomes(bancoDeDados);
+//    listaAmigos::ordenaEmail(bancoDeDados);
+//    listaAmigos::imprimeTudo(bancoDeDados);
 
+//
+//    listaAmigos::ordenaEmail(bancoDeDados);
+//    listaAmigos::imprimeTudo(bancoDeDados);
+
+    auto geral = new bancoDeDados;
+    geral->ordenaNomes(pessoas);
+    geral->imprimeNomes(pessoas);
+
+    geral->ordenaEmail(pessoas);
+    geral->imprimeEmail(pessoas);
+
+//    geral->imprimeTudo(pessoas);
     return 0;
 }

@@ -14,7 +14,7 @@ namespace listaAmigos {
 
     // ver https://stackoverflow.com/questions/33379846/case-insensitive-sorting-of-an-array-of-strings
     //     https://en.cppreference.com/w/cpp/algorithm/lexicographical_compare
-    void ordenaAlfabetico(vector<listaAmigos::data> &amigos) { //TODO fzer template para ordenar
+    void ordenaAlfabetico(vector<listaAmigos::data> &amigos) { //TODO transfoemar em template
         sort(
                 amigos.begin(),
                 amigos.end(),
@@ -63,4 +63,5 @@ namespace listaAmigos {
             cout << endl;
         }
     }
+
 }
