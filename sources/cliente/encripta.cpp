@@ -16,8 +16,8 @@ namespace encripta {
     std::string cifraMensagem(listaAmigos::data& d, std::string mensagem = "")
     {
         if (mensagem.empty())
-            mensagem = d.mensagem.inicial;
-        std::string mensagemCifrada = mensagem; //TODO  alocar apenas espaço da mensagem cifrada, sem copiar
+            mensagem = d.texto.inicial;
+        std::string mensagemCifrada = mensagem; //TODO  alocar apenas espaço da texto cifrada, sem copiar
 
         const std::string chave = d.chave.privada;
 
@@ -31,8 +31,8 @@ namespace encripta {
     std::string decifraMensagem(listaAmigos::data& d, std::string mensagem = "")
     {
         if (mensagem.empty())
-        mensagem = d.mensagem.inicial;
-        std::string mensagemCifrada = mensagem; //TODO  alocar apenas espaço da mensagem cifrada, sem copiar
+        mensagem = d.texto.inicial;
+        std::string mensagemCifrada = mensagem; //TODO  alocar apenas espaço da texto cifrada, sem copiar
 
 
         const std::string chave = d.chave.privada;

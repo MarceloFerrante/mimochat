@@ -49,7 +49,7 @@
 //    {
 //        std::string& host = d.servidor.ipv4;
 //        auto const&  port = d.servidor.porta;
-//        auto const&  text = d.mensagem.inicial;
+//        auto const&  text = d.texto.inicial;
 //
 //        // The io_context is required for all I/O
 //        net::io_context ioc;

@@ -35,8 +35,8 @@
 		aguarda resposta do cliente
 			decifra pacote do cliente
 		se responde com chave publica:
-			cifra mensagem de com chave publica do cliente
-			envia mensagem ok pro cliente
+			cifra texto de com chave publica do cliente
+			envia texto ok pro cliente
 			aguarda ok do cliente
 		testa conexao
 			ping

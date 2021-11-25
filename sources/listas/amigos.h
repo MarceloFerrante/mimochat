@@ -33,14 +33,14 @@ namespace listaAmigos {
 
     };
 
-    struct data {
+    struct data { //TODO fazer classe
         pessoa usuario;
         chaves chave;
         rede servidor;
-        carga mensagem;
+        carga texto;
     };
 
-    void imprimeNomes(vector<listaAmigos::data> &amigos);
+    void imprimeTudo(vector<listaAmigos::data> &amigos);
     void ordenaAlfabetico(vector<listaAmigos::data> &amigos);
     void ordenaEmail(vector<listaAmigos::data> &amigos);
 }
