@@ -8,27 +8,23 @@
 #include <vector>
 #include <iostream>
 
-    void bancoDeDados::imprimeNomes(std::vector <listaAmigos::data> &bancoInterno) { //TODO tentativa de classe. mudar nomes
+    void bancoDeDados::imprimeNomes(std::vector <listaAmigos::data> &bancoInterno) {
         for (auto &n: bancoInterno) {
             std::cout << n.usuario.nome << '\n';
         }
     }
 
-    void bancoDeDados::imprimeNomes() { //TODO tentativa de classe. mudar nomes
-        for (const auto &n: bancoInterno) {
-            std::cout << n.usuario.nome << '\n';
-        }
+    void bancoDeDados::imprimeNomes() {
+        bancoDeDados::imprimeNomes(bancoInterno);
     }
 
-    void bancoDeDados::imprimeEmail(std::vector <listaAmigos::data> &bancoInterno) { //TODO tentativa de classe. mudar nomes
+    void bancoDeDados::imprimeEmail(std::vector <listaAmigos::data> &bancoInterno) {
         for (auto &n: bancoInterno) {
             std::cout << n.usuario.email << '\n';
         }
     }
-    void bancoDeDados::imprimeEmail() { //TODO tentativa de classe. mudar nomes
-        for (const auto &n: bancoInterno) {
-            std::cout << n.usuario.email << '\n';
-        }
+    void bancoDeDados::imprimeEmail() {
+        imprimeEmail(bancoInterno);
     }
 
 
@@ -59,6 +55,9 @@
                 }
         );
     }
+    void bancoDeDados::ordenaNomes(){
+        bancoDeDados::ordenaNomes(bancoInterno);
+    }
 
     void bancoDeDados::ordenaEmail(std::vector <listaAmigos::data> &amigos) {
         sort(
@@ -75,6 +74,10 @@
                 }
         );
     }
+
+void bancoDeDados::ordenaEmail() {
+    bancoDeDados::ordenaEmail(bancoInterno);
+}
 
     void bancoDeDados::imprimeTudo(std::vector <listaAmigos::data> &amigos) {
 
@@ -94,4 +97,8 @@
             std::cout << std::endl;
         }
     }
+void bancoDeDados::imprimeTudo() {
+    bancoDeDados::imprimeTudo(bancoInterno);
+}
+
 
