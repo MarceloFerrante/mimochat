@@ -1,8 +1,8 @@
 //
 // Created by marcelo on 25/11/2021.
 //
-#include "string"
 #include "BD.h"
+#include "string"
 #include "listas/amigos.h"
 #include "cliente/encripta.h"
 #include <vector>
@@ -14,11 +14,33 @@
         }
     }
 
-    void bancoDeDados::imprimeEmail(std::vector <listaAmigos::data> &amigos) { //TODO tentativa de classe. mudar nomes
-        for (auto &n: amigos) {
+    void bancoDeDados::imprimeNomes() { //TODO tentativa de classe. mudar nomes
+        for (const auto &n: bancoInterno) {
+            std::cout << n.usuario.nome << '\n';
+        }
+    }
+
+    void bancoDeDados::imprimeEmail(std::vector <listaAmigos::data> &bancoInterno) { //TODO tentativa de classe. mudar nomes
+        for (auto &n: bancoInterno) {
             std::cout << n.usuario.email << '\n';
         }
     }
+    void bancoDeDados::imprimeEmail() { //TODO tentativa de classe. mudar nomes
+        for (const auto &n: bancoInterno) {
+            std::cout << n.usuario.email << '\n';
+        }
+    }
+
+
+    void bancoDeDados::adicionaContato(listaAmigos::data local){
+        bancoInterno.push_back(local);
+    }
+
+    void bancoDeDados::adicionaContato()
+    {
+
+    }
+
 
 // ver https://stackoverflow.com/questions/33379846/case-insensitive-sorting-of-an-array-of-strings
 //     https://en.cppreference.com/w/cpp/algorithm/lexicographical_compare
@@ -72,3 +94,4 @@
             std::cout << std::endl;
         }
     }
+

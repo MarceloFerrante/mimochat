@@ -14,7 +14,7 @@ namespace listaAmigos {
 
     // ver https://stackoverflow.com/questions/33379846/case-insensitive-sorting-of-an-array-of-strings
     //     https://en.cppreference.com/w/cpp/algorithm/lexicographical_compare
-    void ordenaAlfabetico(vector<listaAmigos::data> &amigos) { //TODO transfoemar em template
+    void ordenaAlfabetico(vector<listaAmigos::data> &amigos) { //TODO transformar em template
         sort(
                 amigos.begin(),
                 amigos.end(),
@@ -62,6 +62,13 @@ namespace listaAmigos {
 //            cout << "Decifrada:   " << n.texto.decifrada << endl;
             cout << endl;
         }
+    }
+
+    void adicionaContato(string nome, string email = "@"){
+        listaAmigos::data local;
+        local.usuario.nome = nome;
+        local.usuario.email = email;
+//            bancoInterno.push_back(local);
     }
 
 }

@@ -6,6 +6,7 @@
 #define MIMOCHAT_BD_H
 
 #include "listas/amigos.h"
+#include "BD.h"
 #include <vector>
 #include <string>
 class bancoDeDados {
@@ -17,12 +18,14 @@ class bancoDeDados {
         void ordenaEmail(std::vector<listaAmigos::data> &bancoInterno);
         void imprimeTudo(std::vector<listaAmigos::data> &bancoInterno);
 
-        void adicionaContato(std::string nome, std::string email = "@"){
-            listaAmigos::data local;
-            local.usuario.nome = nome;
-            local.usuario.email = email;
-//            bancoInterno.push_back(local);
-        }
+        void imprimeNomes();
+        void imprimeEmail();
+        void ordenaNomes();
+        void ordenaEmail();
+        void imprimeTudo();
+
+        void adicionaContato(listaAmigos::data local);
+        void adicionaContato();
 
     private:
         struct chaves {
@@ -53,7 +56,7 @@ class bancoDeDados {
             texto mensagem;
         };
 
-        std::vector<dados> bancoInterno;
+        std::vector<listaAmigos::data> bancoInterno;
     };
 
 

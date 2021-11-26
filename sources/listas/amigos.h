@@ -52,12 +52,7 @@ namespace listaAmigos {
         void ordenaNomes(vector<data> &bancoInterno);
         void ordenaEmail(vector<data> &bancoInterno);
         void imprimeTudo(vector<data> &bancoInterno);
-        void adicionaContato(string nome, string email = "@"){
-            listaAmigos::data local;
-            local.usuario.nome = nome;
-            local.usuario.email = email;
-//            bancoInterno.push_back(local);
-        }
+        void adicionaContato(string nome, string email = "@");
 
     private:
         struct chaves {
