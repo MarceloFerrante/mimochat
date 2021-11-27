@@ -5,61 +5,33 @@
 #ifndef MIMOCHAT_BD_H
 #define MIMOCHAT_BD_H
 
-#include "listas/amigos.h"
 #include "BD.h"
-#include <vector>
+#include "listas/amigos.h"
 #include <string>
+#include <vector>
 class bancoDeDados {
+public:
+  void imprimeNomes(std::vector<listaAmigos::data> &bancoInterno);
+  void imprimeEmail(std::vector<listaAmigos::data> &bancoInterno);
+  void ordenaNomes(std::vector<listaAmigos::data> &bancoInterno);
+  void ordenaEmail(std::vector<listaAmigos::data> &bancoInterno);
+  void imprimeTudo(std::vector<listaAmigos::data> &bancoInterno);
 
-    public:
-        void imprimeNomes(std::vector<listaAmigos::data> &bancoInterno);
-        void imprimeEmail(std::vector<listaAmigos::data> &bancoInterno);
-        void ordenaNomes(std::vector<listaAmigos::data> &bancoInterno);
-        void ordenaEmail(std::vector<listaAmigos::data> &bancoInterno);
-        void imprimeTudo(std::vector<listaAmigos::data> &bancoInterno);
+  void imprimeNomes();
+  void imprimeEmail();
+  void ordenaNomes();
+  void ordenaEmail();
+  void imprimeTudo();
 
-        void imprimeNomes();
-        void imprimeEmail();
-        void ordenaNomes();
-        void ordenaEmail();
-        void imprimeTudo();
+  void adicionaContato(listaAmigos::data local);
+  void adicionaContato(std::string, std::string);
 
-        void adicionaContato(listaAmigos::data local);
-        void adicionaContato();
+  template <typename FN> void ordena(FN extrai);
+  template <typename FN> void ordena();
 
-    private:
-        struct chaves {
-            std::string  publica,
-                    privada;
-        };
+private:
 
-        struct rede {
-            std::string  ipv4;
-            u_int16_t porta;
-        };
+  std::vector<listaAmigos::data> bancoInterno;
+};
 
-        struct texto{ //TODO desnescessãrio?
-            std::string simples,
-                    cifrado;
-
-        };
-
-        struct identidade {
-            std::string  nome,
-                    email;
-        };
-
-        struct dados { //TODO fazer classe
-            identidade id;
-            chaves chave;
-            rede servidor;
-            texto mensagem;
-        };
-
-        std::vector<listaAmigos::data> bancoInterno;
-    };
-
-
-
-
-#endif //MIMOCHAT_BD_H
+#endif // MIMOCHAT_BD_H

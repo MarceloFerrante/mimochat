@@ -1,15 +1,13 @@
-#include <iostream>
 #include "email.h"
 #include "listas/amigos.h"
+#include <iostream>
 namespace mimochat {
 
-    int conecta(int x){
-        return x;
-    }
+int conecta(int x) { return x; }
 
-    std::string conecta(listaAmigos::data d){
-        return d.servidor.ipv4; // TODO conectar rede com ipv4
-    }
+std::string conecta(listaAmigos::data d) {
+  return d.servidor.ipv4; // TODO conectar rede com ipv4
+}
 
 //
 //    int enviaChave(data d){
@@ -17,13 +15,10 @@ namespace mimochat {
 //        return 0;
 //    }
 
-    int enviaChave(int d) {
-        return d;
-    }
-
+int enviaChave(int d) { return d; }
 
 //    template< typename T1, typename T2>
 //    T2 conecta(T1 d) {
 //        return d;
 //    }
-}
+} // namespace mimochat
