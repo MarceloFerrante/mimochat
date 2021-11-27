@@ -5,9 +5,8 @@
 #include "cliente/encripta.h"
 #include "string"
 #include <iostream>
-#include <vector>
 
-void bancoDeDados::imprimeNomes() {
+void bancoDeDados::imprimeNomes() { //TODO fazer template
   for (auto &n : bancoInterno) {
     std::cout << n.id.nome << '\n';
   }
@@ -19,8 +18,8 @@ void bancoDeDados::imprimeEmail() {
   }
 }
 
-void bancoDeDados::adicionaContato(BD::dados local) {
-  bancoInterno.push_back(local);
+void bancoDeDados::adicionaContato(BD::dados d) {
+  bancoInterno.push_back(d);
 }
 
 void bancoDeDados::adicionaContato(BD::pessoa p) {
@@ -29,12 +28,13 @@ void bancoDeDados::adicionaContato(BD::pessoa p) {
 
   if (p.nome.empty())
       p.nome = "Anônimo";
+
   local.id.nome = p.nome;
   bancoInterno.push_back(local);
 }
 
 void bancoDeDados::adicionaContato(std::string email) {
-    bancoDeDados::adicionaContato(BD::pessoa{email, });
+    bancoDeDados::adicionaContato(BD::pessoa{email,});
 
 }
 

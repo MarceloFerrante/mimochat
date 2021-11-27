@@ -47,7 +47,7 @@ public:
   void ordenaEmail();
   void imprimeTudo();
 
-  void adicionaContato(BD::dados local);
+  void adicionaContato(BD::dados d);
   void adicionaContato(std::string);
   void adicionaContato(BD::pessoa p);
 
