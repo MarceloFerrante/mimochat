@@ -18,7 +18,7 @@ if(MIMOCHAT_BUILD_EXEC)
 ENDIF()
 
 if(MIMOCHAT_BUILD_CLIENTE)
-    add_subdirectory(cliente)
+    add_subdirectory(servidorCliente)
 ENDIF()
 
-find_package( boost )
+find_package(Boost )

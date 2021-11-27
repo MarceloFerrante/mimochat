@@ -22,7 +22,7 @@
 //using tcp = boost::asio::ip::tcp;       // from <boost/asio/ip/tcp.hpp>
 //
 //void do_session(tcp::socket socket, ssl::context& ctx);
-//int servidor(BD::dados& d);
+//int endereco(BD::dados& d);
 //
 //
 //#endif //MIMOCHAT_SERVIDOR_H

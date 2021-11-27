@@ -32,7 +32,7 @@ namespace BD {
     struct dados {
         pessoa id;
         chaves chave;
-        rede servidor;
+        rede endereco;
         texto mensagem;
     };
 
@@ -47,9 +47,9 @@ public:
   void ordenaEmail();
   void imprimeTudo();
 
-  void adicionaContato(BD::dados d);
-  void adicionaContato(std::string);
-  void adicionaContato(BD::pessoa p);
+    void adicionaContato(BD::dados d);
+    void adicionaContato(BD::pessoa p);
+    void adicionaContato(std::string);
 
     //template <class FN> void ordena(FN extrai) no include abaixo
     #include "BD.hpp" //TODO mover para o topo do arquivo. Extender classe?

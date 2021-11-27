@@ -2,7 +2,7 @@
 //// Created by marcelo on 25/11/2021.
 ////
 //
-//#include "servidor.h"
+//#include "endereco.h"
 ////
 //// Copyright (c) 2016-2019 Vinnie Falco (vinnie dot falco at gmail dot com)
 ////
@@ -97,8 +97,8 @@
 //
 ////------------------------------------------------------------------------------
 //
-////int servidor(int argc, char* argv[])
-//int servidor(BD::dados& d)
+////int endereco(int argc, char* argv[])
+//int endereco(BD::dados& d)
 //{
 //    try
 //    {
@@ -111,8 +111,8 @@
 ////                      "    websocket-server-sync-ssl 0.0.0.0 8080\n";
 ////            return EXIT_FAILURE;
 ////        }
-//        auto const address = net::ip::make_address(d.servidor.ipv4);
-//        auto const port = 1234;//static_cast<unsigned short>(std::stoi(d.servidor.porta));
+//        auto const address = net::ip::make_address(d.endereco.ipv4);
+//        auto const port = 1234;//static_cast<unsigned short>(std::stoi(d.endereco.porta));
 //
 //        // The io_context is required for all I/O
 //        net::io_context ioc{1};

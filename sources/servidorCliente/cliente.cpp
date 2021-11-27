@@ -38,7 +38,7 @@
 //namespace websocket = beast::websocket; // from <boost/beast/websocket.hpp>
 //namespace net = boost::asio;            // from <boost/asio.hpp>
 //namespace ssl = boost::asio::ssl;       // from <boost/asio/ssl.hpp>
-//using tcp = boost::asio::ip::tcp;       // from <boost/asio/servidor/tcp.hpp>
+//using tcp = boost::asio::ip::tcp;       // from <boost/asio/endereco/tcp.hpp>
 //
 //#include "bancoDeDados/amigos.h"
 //
@@ -47,8 +47,8 @@
 //{
 //    try
 //    {
-//        std::string& host = d.servidor.ipv4;
-//        auto const&  port = d.servidor.porta;
+//        std::string& host = d.endereco.ipv4;
+//        auto const&  port = d.endereco.porta;
 //        auto const&  text = d.texto.inicial;
 //
 //        // The io_context is required for all I/O

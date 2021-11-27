@@ -4,14 +4,14 @@ add_library(email
         interface/console.cpp interface/console.h)
 target_include_directories(email PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
-add_library(cliente
-        cliente/encripta.h
-        cliente/encripta.cpp
-        cliente/cliente.cpp
-        cliente/cliente.h
-        cliente/servidor.cpp
-        cliente/servidor.h)
-target_include_directories(cliente PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+add_library( servidorCliente
+        servidorCliente/encripta.h
+        servidorCliente/encripta.cpp
+        servidorCliente/cliente.cpp
+        servidorCliente/cliente.h
+        servidorCliente/servidor.cpp
+        servidorCliente/servidor.h )
+target_include_directories( servidorCliente PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_library( bancoDeDados
         bancoDeDados/BD.cpp

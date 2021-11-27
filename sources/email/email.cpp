@@ -7,7 +7,7 @@ namespace mimochat {
 int conecta(int x) { return x; }
 
 std::string conecta(BD::dados d) {
-  return d.servidor.ipv4; //
+  return d.endereco.ipv4; //
 }
 
 //

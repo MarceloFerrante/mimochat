@@ -2,7 +2,7 @@
 // Created by marcelo on 25/11/2021.
 //
 #include "BD.h"
-#include "cliente/encripta.h"
+#include "servidorCliente/encripta.h"
 #include "string"
 #include <iostream>
 

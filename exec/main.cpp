@@ -1,7 +1,7 @@
 #include "bancoDeDados/BD.h"
-#include <cliente/encripta.h>
+#include <servidorCliente/encripta.h>
 //#include "cliente/cliente.h"
-//#include "cliente/servidor.h"
+//#include "servidorCliente/endereco.h"
 
 int main() {
   using namespace std;
@@ -13,7 +13,7 @@ int main() {
     BD::dados local;
     local.id.nome = encripta::random_string(4) + " amigo " + to_string(x);
     local.id.email = encripta::random_string(4) + "@ab.com";
-    local.servidor.ipv4 = "192.168.0.1";
+    local.endereco.ipv4 = "192.168.0.1";
     local.chave.publica = encripta::random_string(16);
     local.chave.privada = local.chave.publica;
     local.mensagem.simples = "Mensagem de teste " + to_string(x);
