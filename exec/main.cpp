@@ -2,6 +2,7 @@
 #include <servidorCliente/encripta.h>
 //#include "cliente/cliente.h"
 //#include "servidorCliente/endereco.h"
+#include "boost/asio.hpp"
 
 int main() {
   using namespace std;

@@ -21,4 +21,6 @@ if(MIMOCHAT_BUILD_CLIENTE)
     add_subdirectory(servidorCliente)
 ENDIF()
 
-find_package(Boost )
+# see https://cmake.org/cmake/help/latest/module/FindBoost.html
+find_package( Boost REQUIRED )
+include_directories( ${Boost_INCLUDE_DIR} )
