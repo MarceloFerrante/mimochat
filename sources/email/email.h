@@ -4,7 +4,7 @@
 #ifndef MIMOCHAT_EMAIL_H
 #define MIMOCHAT_EMAIL_H
 
-#include "BD.h"
+#include "bancoDeDados/BD.h"
 namespace mimochat {
 
 //    template< typename T1, typename T2>

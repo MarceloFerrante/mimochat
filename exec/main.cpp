@@ -1,6 +1,6 @@
-#include "BD.h"
-#include "cliente/cliente.h"
-#include "cliente/servidor.h"
+#include "bancoDeDados/BD.h"
+//#include "cliente/cliente.h"
+//#include "cliente/servidor.h"
 #include <cliente/encripta.h>
 
 int main() {
@@ -22,13 +22,11 @@ int main() {
 
   listaDePessoas.adicionaContato("marcelo@c.com");
 
-//  listaDePessoas.ordenaNomes();
-//  listaDePessoas.imprimeNomes();
-//  listaDePessoas.ordenaEmail();
-//  listaDePessoas.imprimeEmail();
+  listaDePessoas.ordenaNomes();
+  listaDePessoas.imprimeNomes();
+  listaDePessoas.ordenaEmail();
+  listaDePessoas.imprimeEmail();
 
-  listaDePessoas.imprimeEmail();
   listaDePessoas.ordena([](BD::dados &x) { return x.id.email; });
-  listaDePessoas.imprimeEmail();
   return 0;
 }

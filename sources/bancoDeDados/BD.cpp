@@ -42,25 +42,11 @@ void bancoDeDados::adicionaContato(std::string email) {
 // https://stackoverflow.com/questions/33379846/case-insensitive-sorting-of-an-array-of-strings
 //     https://en.cppreference.com/w/cpp/algorithm/lexicographical_compare
 void bancoDeDados::ordenaNomes() { // TODO transformar em template
-  sort(bancoInterno.begin(), bancoInterno.end(),
-       [](const BD::dados &a, const BD::dados &b) {
-         return lexicographical_compare(
-             a.id.nome.begin(), a.id.nome.end(), b.id.nome.begin(),
-             b.id.nome.end(), [](const char &char1, const char &char2) {
-               return tolower(char1) < tolower(char2);
-             });
-       });
+    bancoDeDados::ordena([](BD::dados &x) { return x.id.nome; });
 }
 
 void bancoDeDados::ordenaEmail() {
-  sort(bancoInterno.begin(), bancoInterno.end(),
-       [](BD::dados &a, BD::dados &b) {
-         return lexicographical_compare(
-             a.id.email.begin(), a.id.email.end(), b.id.email.begin(),
-             b.id.email.end(), [](const char &char1, const char &char2) {
-               return tolower(char1) < tolower(char2);
-             });
-       });
+    bancoDeDados::ordena([](BD::dados &x) { return x.id.email; });
 }
 
 void bancoDeDados::imprimeTudo() {
@@ -80,22 +66,4 @@ void bancoDeDados::imprimeTudo() {
     std::cout << "Decifrada:   " << n.mensagem.decifrada << std::endl;
     std::cout << std::endl;
   }
-}
-
-// BD::dados extrai(BD::dados d) { return d; }
-
-//template <class FN> void bancoDeDados::ordena(FN extrai) { // TODO template não compila
-//  sort(bancoInterno.begin(), bancoInterno.end(),
-//       [extrai](BD::dados &a, BD::dados &b) {
-//         return lexicographical_compare(
-//             extrai(a).begin(), extrai(a).end(),
-//             extrai(b).begin(), extrai(b).end(),
-//             [](const char &char1, const char &char2) {
-//               return tolower(char1) < tolower(char2);
-//             });
-//       });
-//}
-
-template <typename FN> void bancoDeDados::ordena() {
-  bancoDeDados::ordena([](BD::dados &x) { return x.id.email; });
 }

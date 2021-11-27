@@ -5,7 +5,6 @@
 #ifndef MIMOCHAT_BD_H
 #define MIMOCHAT_BD_H
 
-#include "BD.h"
 #include <string>
 #include <vector>
 
@@ -52,20 +51,8 @@ public:
   void adicionaContato(std::string);
   void adicionaContato(BD::pessoa p);
 
-//  template <class FN> void ordena(FN extrai);
-  template <typename FN> void ordena();
-    template <class FN> void ordena(FN extrai) {
-        sort(bancoInterno.begin(), bancoInterno.end(),
-             [extrai](BD::dados &a, BD::dados &b) {
-                 return lexicographical_compare(
-                         extrai(a).begin(), extrai(a).end(),
-                         extrai(b).begin(), extrai(b).end(),
-                         [](const char &char1, const char &char2) {
-                             return tolower(char1) < tolower(char2);
-                         });
-             });
-    }
-
+    //template <class FN> void ordena(FN extrai) no include abaixo
+    #include "BD.hpp" //TODO mover para o topo do arquivo. Extender classe?
 
 private:
   std::vector<BD::dados> bancoInterno;

@@ -13,9 +13,11 @@ add_library(cliente
         cliente/servidor.h)
 target_include_directories(cliente PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
-add_library(listas
-        BD.cpp BD.h )
-target_include_directories(listas PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+add_library( bancoDeDados
+        bancoDeDados/BD.cpp
+        bancoDeDados/BD.h
+        bancoDeDados/BD.hpp )
+target_include_directories( bancoDeDados PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_library(interface
         interface/console.h

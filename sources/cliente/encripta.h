@@ -2,7 +2,7 @@
 #define ENCRIPTA_H
 
 #include <string>
-#include "BD.h"
+#include "bancoDeDados/BD.h"
 namespace encripta {
 
 int enviaChave();
