@@ -12,7 +12,7 @@ namespace mimochat {
 
 int enviaChave();
 int conecta(int x);
-std::string conecta(BD::data d);
+std::string conecta(BD::dados d);
 
 } // namespace mimochat
 

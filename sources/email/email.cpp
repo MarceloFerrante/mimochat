@@ -6,13 +6,13 @@ namespace mimochat {
 
 int conecta(int x) { return x; }
 
-std::string conecta(BD::data d) {
-  return d.servidor.ipv4; // TODO conectar rede com ipv4
+std::string conecta(BD::dados d) {
+  return d.servidor.ipv4; //
 }
 
 //
-//    int enviaChave(data d){
-//        d.chave.publica; // TODO enviar chave publica
+//    int enviaChave(dados d){
+//        d.chave.publica; //
 //        return 0;
 //    }
 

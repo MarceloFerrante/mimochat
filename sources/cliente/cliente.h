@@ -6,6 +6,6 @@
 //#define MIMOCHAT_CLIENTE_H
 //
 //#include "listas//amigos.h"
-//int enviaMensagem(BD::data& d);
+//int enviaMensagem(BD::dados& d);
 //
 //#endif //MIMOCHAT_CLIENTE_H

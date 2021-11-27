@@ -4,7 +4,7 @@
 
 namespace encripta {
 
-/* TODO olhar:
+/* Olhar:
  * https://www.thecrazyprogrammer.com/2017/03/rsa-algorithm.html
  * https://cryptopp.com/#download
  * https://github.com/randombit/botan
@@ -12,7 +12,7 @@ namespace encripta {
  * https://github.com/weidai11/cryptopp
  * https://github.com/weidai11/cryptopp/releases/tag/CRYPTOPP_8_6_0
  */
-std::string cifraMensagem(BD::data & d, std::string mensagem = "") {
+std::string cifraMensagem(BD::dados & d, std::string mensagem = "") {
   if (mensagem.empty())
     mensagem = d.mensagem.simples;
   std::string mensagemCifrada =
@@ -29,7 +29,7 @@ std::string cifraMensagem(BD::data & d, std::string mensagem = "") {
   return mensagemCifrada;
 }
 
-std::string decifraMensagem(BD::data & d, std::string mensagem = "") {
+std::string decifraMensagem(BD::dados & d, std::string mensagem = "") {
   if (mensagem.empty())
     mensagem = d.mensagem.simples;
   std::string mensagemCifrada =

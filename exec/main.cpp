@@ -6,10 +6,8 @@
 int main() {
   using namespace std;
 
-  // lista de bancoDeDados
-
   bancoDeDados listaDePessoas;
-  BD::data local;
+  BD::dados local;
   // popula lista
   for (int x = 0; x < 5; ++x) {
     local.id.nome = encripta::random_string(4) + " amigo " + to_string(x);
@@ -21,11 +19,16 @@ int main() {
     listaDePessoas.adicionaContato(local);
   }
 
-  listaDePessoas.ordenaNomes();
-  listaDePessoas.imprimeNomes();
-  listaDePessoas.ordenaEmail();
-  listaDePessoas.imprimeEmail();
 
-//  listaDePessoas.ordena([](BD::data &x) { return x.id.email; });
+  listaDePessoas.adicionaContato("marcelo@c.com");
+
+//  listaDePessoas.ordenaNomes();
+//  listaDePessoas.imprimeNomes();
+//  listaDePessoas.ordenaEmail();
+//  listaDePessoas.imprimeEmail();
+
+  listaDePessoas.imprimeEmail();
+  listaDePessoas.ordena([](BD::dados &x) { return x.id.email; });
+  listaDePessoas.imprimeEmail();
   return 0;
 }

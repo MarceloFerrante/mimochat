@@ -43,7 +43,7 @@
 //#include "listas/amigos.h"
 //
 //// Sends a WebSocket message and prints the response
-//int enviaMensagem(BD::data& d)
+//int enviaMensagem(BD::dados& d)
 //{
 //    try
 //    {
@@ -113,7 +113,7 @@
 //        // If we get here then the connection is closed gracefully
 //
 //        // The make_printable() function helps print a ConstBufferSequence
-//        std::cout << beast::make_printable(buffer.data()) << std::endl;
+//        std::cout << beast::make_printable(buffer.dados()) << std::endl;
 //    }
 //    catch(std::exception const& e)
 //    {

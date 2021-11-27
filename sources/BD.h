@@ -12,10 +12,10 @@
 namespace BD {
     using namespace std;
 
-    struct pessoa {
+    typedef struct pessoa {
         string email,
-                nome; // TODO pegar nome a partir do emailb
-    };
+                nome; // TODO pegar nome a partir do email
+    }pessoa;
 
     struct chaves {
         string publica, privada;
@@ -30,16 +30,12 @@ namespace BD {
         string simples, cifrada, decifrada;
     };
 
-    struct data { // TODO fazer classe
+    struct dados {
         pessoa id;
         chaves chave;
         rede servidor;
         texto mensagem;
     };
-
-    void imprimeTudo(vector<BD::data> &amigos);
-    void ordenaAlfabetico(vector<BD::data> &amigos);
-    void ordenaEmail(vector<BD::data> &amigos);
 
 } // namespace BD
 
@@ -52,14 +48,27 @@ public:
   void ordenaEmail();
   void imprimeTudo();
 
-  void adicionaContato(BD::data local);
-  void adicionaContato(std::string, std::string);
+  void adicionaContato(BD::dados local);
+  void adicionaContato(std::string);
+  void adicionaContato(BD::pessoa p);
 
-  template <class FN> void ordena(FN extrai);
+//  template <class FN> void ordena(FN extrai);
   template <typename FN> void ordena();
+    template <class FN> void ordena(FN extrai) {
+        sort(bancoInterno.begin(), bancoInterno.end(),
+             [extrai](BD::dados &a, BD::dados &b) {
+                 return lexicographical_compare(
+                         extrai(a).begin(), extrai(a).end(),
+                         extrai(b).begin(), extrai(b).end(),
+                         [](const char &char1, const char &char2) {
+                             return tolower(char1) < tolower(char2);
+                         });
+             });
+    }
+
 
 private:
-  std::vector<BD::data> bancoInterno;
+  std::vector<BD::dados> bancoInterno;
 };
 
 #endif // MIMOCHAT_BD_H

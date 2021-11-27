@@ -80,7 +80,7 @@
 //
 //            // Echo the message back
 //            ws.text(ws.got_text());
-//            ws.write(buffer.data());
+//            ws.write(buffer.dados());
 //        }
 //    }
 //    catch(beast::system_error const& se)
@@ -98,7 +98,7 @@
 ////------------------------------------------------------------------------------
 //
 ////int servidor(int argc, char* argv[])
-//int servidor(BD::data& d)
+//int servidor(BD::dados& d)
 //{
 //    try
 //    {
