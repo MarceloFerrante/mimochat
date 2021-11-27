@@ -1,5 +1,4 @@
 #include "encripta.h"
-#include "listas/amigos.h"
 #include <random>
 #include <string>
 
@@ -13,7 +12,7 @@ namespace encripta {
  * https://github.com/weidai11/cryptopp
  * https://github.com/weidai11/cryptopp/releases/tag/CRYPTOPP_8_6_0
  */
-std::string cifraMensagem(listaAmigos::data &d, std::string mensagem = "") {
+std::string cifraMensagem(BD::data & d, std::string mensagem = "") {
   if (mensagem.empty())
     mensagem = d.mensagem.simples;
   std::string mensagemCifrada =
@@ -30,7 +29,7 @@ std::string cifraMensagem(listaAmigos::data &d, std::string mensagem = "") {
   return mensagemCifrada;
 }
 
-std::string decifraMensagem(listaAmigos::data &d, std::string mensagem = "") {
+std::string decifraMensagem(BD::data & d, std::string mensagem = "") {
   if (mensagem.empty())
     mensagem = d.mensagem.simples;
   std::string mensagemCifrada =

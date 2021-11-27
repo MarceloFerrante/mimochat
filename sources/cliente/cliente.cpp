@@ -43,7 +43,7 @@
 //#include "listas/amigos.h"
 //
 //// Sends a WebSocket message and prints the response
-//int enviaMensagem(listaAmigos::data& d)
+//int enviaMensagem(BD::data& d)
 //{
 //    try
 //    {

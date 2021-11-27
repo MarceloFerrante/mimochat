@@ -6,16 +6,45 @@
 #define MIMOCHAT_BD_H
 
 #include "BD.h"
-#include "listas/amigos.h"
 #include <string>
 #include <vector>
+
+namespace BD {
+    using namespace std;
+
+    struct pessoa {
+        string email,
+                nome; // TODO pegar nome a partir do emailb
+    };
+
+    struct chaves {
+        string publica, privada;
+    };
+
+    struct rede {
+        string ipv4;
+        u_int16_t porta;
+    };
+
+    struct texto {
+        string simples, cifrada, decifrada;
+    };
+
+    struct data { // TODO fazer classe
+        pessoa id;
+        chaves chave;
+        rede servidor;
+        texto mensagem;
+    };
+
+    void imprimeTudo(vector<BD::data> &amigos);
+    void ordenaAlfabetico(vector<BD::data> &amigos);
+    void ordenaEmail(vector<BD::data> &amigos);
+
+} // namespace BD
+
 class bancoDeDados {
 public:
-  void imprimeNomes(std::vector<listaAmigos::data> &bancoInterno);
-  void imprimeEmail(std::vector<listaAmigos::data> &bancoInterno);
-  void ordenaNomes(std::vector<listaAmigos::data> &bancoInterno);
-  void ordenaEmail(std::vector<listaAmigos::data> &bancoInterno);
-  void imprimeTudo(std::vector<listaAmigos::data> &bancoInterno);
 
   void imprimeNomes();
   void imprimeEmail();
@@ -23,15 +52,14 @@ public:
   void ordenaEmail();
   void imprimeTudo();
 
-  void adicionaContato(listaAmigos::data local);
+  void adicionaContato(BD::data local);
   void adicionaContato(std::string, std::string);
 
-  template <typename FN> void ordena(FN extrai);
+  template <class FN> void ordena(FN extrai);
   template <typename FN> void ordena();
 
 private:
-
-  std::vector<listaAmigos::data> bancoInterno;
+  std::vector<BD::data> bancoInterno;
 };
 
 #endif // MIMOCHAT_BD_H

@@ -14,8 +14,6 @@ add_library(cliente
 target_include_directories(cliente PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_library(listas
-        listas/amigos.h
-        listas/amigos.cpp
         BD.cpp BD.h )
 target_include_directories(listas PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 

@@ -1,9 +1,7 @@
 #include "BD.h"
 #include "cliente/cliente.h"
 #include "cliente/servidor.h"
-#include "listas/amigos.h"
 #include <cliente/encripta.h>
-#include <iostream>
 
 int main() {
   using namespace std;
@@ -11,7 +9,7 @@ int main() {
   // lista de bancoDeDados
 
   bancoDeDados listaDePessoas;
-  listaAmigos::data local;
+  BD::data local;
   // popula lista
   for (int x = 0; x < 5; ++x) {
     local.id.nome = encripta::random_string(4) + " amigo " + to_string(x);
@@ -28,6 +26,6 @@ int main() {
   listaDePessoas.ordenaEmail();
   listaDePessoas.imprimeEmail();
 
-//  listaDePessoas.ordena([](listaAmigos::data &x) { return x.id.email; });
+//  listaDePessoas.ordena([](BD::data &x) { return x.id.email; });
   return 0;
 }

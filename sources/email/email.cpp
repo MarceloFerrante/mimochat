@@ -1,11 +1,12 @@
+//trata dados do email
+//oauth2
+
 #include "email.h"
-#include "listas/amigos.h"
-#include <iostream>
 namespace mimochat {
 
 int conecta(int x) { return x; }
 
-std::string conecta(listaAmigos::data d) {
+std::string conecta(BD::data d) {
   return d.servidor.ipv4; // TODO conectar rede com ipv4
 }
 

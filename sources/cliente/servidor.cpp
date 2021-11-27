@@ -98,7 +98,7 @@
 ////------------------------------------------------------------------------------
 //
 ////int servidor(int argc, char* argv[])
-//int servidor(listaAmigos::data& d)
+//int servidor(BD::data& d)
 //{
 //    try
 //    {

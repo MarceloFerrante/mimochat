@@ -3,7 +3,6 @@
 //
 #include "BD.h"
 #include "cliente/encripta.h"
-#include "listas/amigos.h"
 #include "string"
 #include <iostream>
 #include <vector>
@@ -20,13 +19,13 @@ void bancoDeDados::imprimeEmail() {
   }
 }
 
-void bancoDeDados::adicionaContato(listaAmigos::data local) {
+void bancoDeDados::adicionaContato(BD::data local) {
   bancoInterno.push_back(local);
 }
 
 void bancoDeDados::adicionaContato(std::string email,
                                    std::string nome = "anonimo") {
-  listaAmigos::data local;
+  BD::data local;
   local.id.email = email;
   local.id.nome = nome;
   bancoInterno.push_back(local);
@@ -36,7 +35,7 @@ void bancoDeDados::adicionaContato(std::string email,
 //     https://en.cppreference.com/w/cpp/algorithm/lexicographical_compare
 void bancoDeDados::ordenaNomes() { // TODO transformar em template
   sort(bancoInterno.begin(), bancoInterno.end(),
-       [](const listaAmigos::data &a, const listaAmigos::data &b) {
+       [](const BD::data &a, const BD::data &b) {
          return lexicographical_compare(
              a.id.nome.begin(), a.id.nome.end(), b.id.nome.begin(),
              b.id.nome.end(), [](const char &char1, const char &char2) {
@@ -47,7 +46,7 @@ void bancoDeDados::ordenaNomes() { // TODO transformar em template
 
 void bancoDeDados::ordenaEmail() {
   sort(bancoInterno.begin(), bancoInterno.end(),
-       [](listaAmigos::data &a, listaAmigos::data &b) {
+       [](BD::data &a, BD::data &b) {
          return lexicographical_compare(
              a.id.email.begin(), a.id.email.end(), b.id.email.begin(),
              b.id.email.end(), [](const char &char1, const char &char2) {
@@ -75,11 +74,11 @@ void bancoDeDados::imprimeTudo() {
   }
 }
 
-// listaAmigos::data extrai(listaAmigos::data d) { return d; }
+// BD::data extrai(BD::data d) { return d; }
 
-template <typename FN> void bancoDeDados::ordena(FN extrai) { // TODO
+template <class FN> void bancoDeDados::ordena(FN extrai) { // TODO
   sort(bancoInterno.begin(), bancoInterno.end(),
-       [extrai](listaAmigos::data &a, listaAmigos::data &b) {
+       [extrai](BD::data &a, BD::data &b) {
          return lexicographical_compare(
              extrai(a).begin(), extrai(a).end(),
              extrai(b).begin(), extrai(b).end(),
@@ -90,5 +89,5 @@ template <typename FN> void bancoDeDados::ordena(FN extrai) { // TODO
 }
 
 template <typename FN> void bancoDeDados::ordena() {
-  bancoDeDados::ordena([](listaAmigos::data &x) { return x.id.email; });
+  bancoDeDados::ordena([](BD::data &x) { return x.id.email; });
 }
