@@ -14,7 +14,8 @@ console::console() {
     Q Sair                      \n\
     1 Adicionar contato         \n\
     2 Remover contato           \n\
-    3 Checar conexões           \n";
+    3 Checar conexões           \n\
+    4 Imprimir contatos         \n";
 
     //TODO limpar tela
 }
@@ -41,16 +42,21 @@ char console::opcao(bancoDeDados bd) {
             cin >> email;
             cout << "Qual o nome dela?\n";
             cin >> nome;
-            bd.adicionaContato(BD::pessoa{email, nome});
+            bd.adicionaContato(email, nome);
             break;
         }
         case '2':
             std::cout << "Opção " << opcao << endl;
             break;
+
         case '3':
             std::cout << "Opção " << opcao << endl;
             pingAll(bd);
             break;
+        case '4':
+            bd.imprimeNomes();
+            break;
+
         default:
             std::cout << "Opcao inválida";
     }

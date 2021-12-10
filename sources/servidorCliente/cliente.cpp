@@ -130,8 +130,7 @@
 int pingAll(bancoDeDados& bd) {
 // checa conexoes
     using namespace boost;
-    asio::thread_pool pool(std::thread::hardware_concurrency()-1);
-
+    asio::thread_pool pool(std::thread::hardware_concurrency());
 
     for(size_t i = 0; i < 10; ++i){ //TODO percorrer banco de dados
 
@@ -142,5 +141,5 @@ int pingAll(bancoDeDados& bd) {
     }
 
     pool.join();
-    return 0;}
-
+    return 0;
+}

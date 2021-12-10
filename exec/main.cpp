@@ -14,14 +14,14 @@ int main()
 
   // popula lista
   for (int x = 0; x < 5; ++x) {
-    BD::dados local;
-    local.id.nome = encripta::random_string(4) + " amigo " + to_string(x);
-    local.id.email = encripta::random_string(4) + "@ab.com";
-    local.endereco.ipv4 = "192.168.0.1";
-    local.chave.publica = encripta::random_string(16);
-    local.chave.privada = local.chave.publica;
-    local.mensagem.simples = "Mensagem de teste " + to_string(x);
-    listaDePessoas.adicionaContato(local);
+    string nome, email, ipv4, pub, priv, msg;
+    nome = encripta::random_string(4) + " amigo " + to_string(x);
+    email = encripta::random_string(4) + "@ab.com";
+    ipv4 =  "192.168.0.1";
+    pub = encripta::random_string(16);
+    priv =  pub;
+    msg =  "Mensagem de teste " + to_string(x);
+    listaDePessoas.adicionaContato(email, nome, ipv4, pub, priv, msg);
   }
 
 //    listaDePessoas.ordenaNomes();
