@@ -17,7 +17,7 @@ int main()
     string nome, email, ipv4, pub, priv, msg;
     nome = encripta::random_string(4) + " amigo " + to_string(x);
     email = encripta::random_string(4) + "@ab.com";
-    ipv4 =  "192.168.0.1";
+    ipv4 =  "192.168.0.10" + to_string(x);
     pub = encripta::random_string(16);
     priv =  pub;
     msg =  "Mensagem de teste " + to_string(x);
@@ -33,15 +33,14 @@ int main()
   //  listaDePessoas.imprime([](BD::dados &d) { std::cout << d.id.nome; });]
 
     console console;
+//
+//    char opcao;
+//    do{
+//        console.draw();
+//        opcao = console.opcao(listaDePessoas);
+//    }
+//    while (opcao);
 
-    char opcao;
-
-    do{
-        console.draw();
-        opcao = console.opcao(listaDePessoas);
-    }
-    while (opcao);
-
-
+    listaDePessoas.pingAll();
   return 0;
 }

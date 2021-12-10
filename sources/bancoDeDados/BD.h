@@ -63,6 +63,9 @@ public:
 
     void setIpv4(std::string &ip);
 
+    void ping(std::string ipv4);
+    void pingAll();
+
     std::string getNome(size_t indice); //retorna nome do endereço []
     std::string getNome(std::string &email); //retorna nome do email. Usar map? <nome,email>?
 
@@ -78,7 +81,7 @@ public:
     void adicionaContato(std::string &email, std::string &nome, std::string &ipv4, std::string &publica,
                          std::string &privada, std::string &mensagem);
 
-    //template <class FN> void ordena(FN extrai) no include abaixo
+//template <class FN> void ordena(FN extrai) no include abaixo
 #include "BD.hpp" //TODO mover para o topo do arquivo. Extender classe?
 
 private:

@@ -5,6 +5,7 @@
 #include "servidorCliente/encripta.h"
 #include "string"
 #include <iostream>
+#include "boost/asio.hpp"
 
 bancoDeDados::bancoDeDados() { //fazer iterador para percorrer toda as entradas
     indice = 0;
@@ -123,5 +124,23 @@ std::string bancoDeDados::getIpv4(size_t indice) {
 
 //retorna ip a partir do email
 std::string bancoDeDados::getIpv4(std::string &email) {
-    return bancoInterno[indice].endereco.ipv4; //TODO implementar busca por email
+    return bancoInterno[indice].endereco.ipv4; //TODO implementar busca por email, arvore binaria
 }
+
+void bancoDeDados::ping(std::string ipv4) {
+    std::cout << "pingando " << ipv4 << " " /*<< std::this_thread::get_id()*/ << std::endl;
+}
+
+void bancoDeDados::pingAll() {
+    boost::asio::thread_pool pool(std::thread::hardware_concurrency());
+
+    for (auto &n: bancoInterno) {
+        boost::asio::post(pool, [n, this]() {
+            std::string str = n.endereco.ipv4;
+            ping(str);
+        });
+    }
+    pool.join();
+    return;
+}
+

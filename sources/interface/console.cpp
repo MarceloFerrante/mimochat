@@ -50,8 +50,9 @@ char console::opcao(bancoDeDados bd) {
 
         case '3':
             std::cout << "Opção " << opcao << endl;
-            pingAll(bd);
+            bd.pingAll();
             break;
+
         case '4':
             bd.imprimeNomes();
             break;
