@@ -6,7 +6,9 @@
 #define MIMOCHAT_CLIENTE_H
 
 #include "bancoDeDados/BD.h"
-int enviaMensagem(BD::dados& d);
-int pingAll(bancoDeDados& bd);
+
+int enviaMensagem(BD::dados &d);
+
+int pingAll(bancoDeDados &bd);
 
 #endif //MIMOCHAT_CLIENTE_H

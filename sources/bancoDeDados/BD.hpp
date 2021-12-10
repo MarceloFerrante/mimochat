@@ -1,4 +1,5 @@
-template <class FN> void ordena(FN extrai) {
+template<class FN>
+void ordena(FN extrai) {
     sort(bancoInterno.begin(), bancoInterno.end(),
          [extrai](BD::dados &a, BD::dados &b) {
              return lexicographical_compare(
@@ -10,9 +11,9 @@ template <class FN> void ordena(FN extrai) {
          });
 }
 
-template <class FN>
+template<class FN>
 void imprime(FN extrai) {
     [extrai](BD::dados &a) {
-       return extrai(a);
+        return extrai(a);
     };
 }

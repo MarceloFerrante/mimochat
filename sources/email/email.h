@@ -5,14 +5,17 @@
 #define MIMOCHAT_EMAIL_H
 
 #include "bancoDeDados/BD.h"
+
 namespace mimochat {
 
 //    template< typename T1, typename T2>
 //    T2 conecta(T1 d);
 
-int enviaChave();
-int conecta(int x);
-std::string conecta(BD::dados d);
+    int enviaChave();
+
+    int conecta(int x);
+
+    std::string conecta(BD::dados d);
 
 } // namespace mimochat
 

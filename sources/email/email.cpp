@@ -4,13 +4,14 @@
  * https://github.com/d99kris/nmail
  */
 #include "email.h"
+
 namespace mimochat {
 
-int conecta(int x) { return x; }
+    int conecta(int x) { return x; }
 
-std::string conecta(BD::dados d) {
-  return d.endereco.ipv4; //
-}
+    std::string conecta(BD::dados d) {
+        return d.endereco.ipv4; //
+    }
 //
 //std::string conecta(bancoDeDados bd){
 //    return 0;
@@ -22,7 +23,7 @@ std::string conecta(BD::dados d) {
 //        return 0;
 //    }
 
-int enviaChave(int d) { return d; }
+    int enviaChave(int d) { return d; }
 
 //    template< typename T1, typename T2>
 //    T2 conecta(T1 d) {

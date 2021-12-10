@@ -44,8 +44,7 @@ namespace detail {
 
     inline
     void
-    load_root_certificates(ssl::context& ctx, boost::system::error_code& ec)
-    {
+    load_root_certificates(ssl::context &ctx, boost::system::error_code &ec) {
         std::string cert =
                 "# ACCVRAIZ1\n"
                 "-----BEGIN CERTIFICATE-----\n"
@@ -3935,7 +3934,7 @@ namespace detail {
 
         ctx.add_certificate_authority(
                 boost::asio::buffer(cert.data(), cert.size()), ec);
-        if(ec)
+        if (ec)
             return;
     }
 
@@ -3945,18 +3944,16 @@ namespace detail {
 
 inline
 void
-load_root_certificates(ssl::context& ctx, boost::system::error_code& ec)
-{
+load_root_certificates(ssl::context &ctx, boost::system::error_code &ec) {
     detail::load_root_certificates(ctx, ec);
 }
 
 inline
 void
-load_root_certificates(ssl::context& ctx)
-{
+load_root_certificates(ssl::context &ctx) {
     boost::system::error_code ec;
     detail::load_root_certificates(ctx, ec);
-    if(ec)
+    if (ec)
         throw boost::system::system_error{ec};
 }
 

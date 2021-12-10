@@ -9,7 +9,7 @@
 
 console::console() {
 
-    menu_principal =\
+    menu_principal = \
     "            C H A T        \n\
     Q Sair                      \n\
     1 Adicionar contato         \n\
@@ -29,13 +29,12 @@ char console::opcao(bancoDeDados bd) {
     using namespace std;
 
     string s;
-    cin >>s;
+    cin >> s;
     char opcao = s.back();
-    if (opcao== 'Q' || opcao == 'q') return 0;
+    if (opcao == 'Q' || opcao == 'q') return 0;
 
     switch (opcao) {
-        case '1':
-        {
+        case '1': {
             string nome, email;
             std::cout << "Opção " << opcao << endl;
             cout << "Digite o email da pessoa?\n";

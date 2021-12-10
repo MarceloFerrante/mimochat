@@ -26,8 +26,7 @@
 */
 inline
 void
-load_server_certificate(boost::asio::ssl::context& ctx)
-{
+load_server_certificate(boost::asio::ssl::context &ctx) {
     /*
         The certificate was generated from CMD.EXE on Windows 10 using:
 
@@ -100,8 +99,7 @@ load_server_certificate(boost::asio::ssl::context& ctx)
 
     ctx.set_password_callback(
             [](std::size_t,
-               boost::asio::ssl::context_base::password_purpose)
-            {
+               boost::asio::ssl::context_base::password_purpose) {
                 return "test";
             });
 

@@ -10,46 +10,41 @@ bancoDeDados::bancoDeDados() { //fazer iterador para percorrer toda as entradas
     indice = 0;
 }
 
-
 void
-bancoDeDados::imprimeNomes()
-{ // TODO fazer template
-  for (auto& n : bancoInterno) {
-    std::cout << n.id.nome << '\n';
-  }
+bancoDeDados::imprimeNomes() { // TODO fazer template
+    for (auto &n: bancoInterno) {
+        std::cout << n.id.nome << '\n';
+    }
 }
 
 void
-bancoDeDados::imprimeEmail()
-{
-  for (auto& n : bancoInterno) {
-    std::cout << n.id.email << '\n';
-  }
+bancoDeDados::imprimeEmail() {
+    for (auto &n: bancoInterno) {
+        std::cout << n.id.email << '\n';
+    }
 }
 
-void bancoDeDados::adicionaContato(std::string& email,
-                                   std::string& nome,
-                                   std::string& ipv4,
-                                   std::string& publica ,
-                                   std::string& privada,
-                                   std::string& mensagem)
-{
+void bancoDeDados::adicionaContato(std::string &email,
+                                   std::string &nome,
+                                   std::string &ipv4,
+                                   std::string &publica,
+                                   std::string &privada,
+                                   std::string &mensagem) {
     BD::dados local;
     local.id.nome = nome;
     local.id.email = email;
     local.endereco.ipv4 = ipv4;
     local.chave.publica = publica;
-    local.chave.privada =  privada;
+    local.chave.privada = privada;
     local.mensagem.simples = mensagem;
     bancoInterno.push_back(local);
 }
 
 
-void bancoDeDados::adicionaContato(std::string email, std::string nome = " ")
-{
-  if (nome.empty())
-    nome = "Anônimo";
-  std::string s;
+void bancoDeDados::adicionaContato(std::string email, std::string nome = " ") {
+    if (nome.empty())
+        nome = "Anônimo";
+    std::string s;
     adicionaContato(email, nome, s, s, s, s);
 }
 
@@ -64,36 +59,33 @@ void bancoDeDados::adicionaContato(std::string email, std::string nome = " ")
 // https://stackoverflow.com/questions/33379846/case-insensitive-sorting-of-an-array-of-strings
 //     https://en.cppreference.com/w/cpp/algorithm/lexicographical_compare
 void
-bancoDeDados::ordenaNomes()
-{ // TODO transformar em template
-  bancoDeDados::ordena([](BD::dados& x) { return x.id.nome; });
+bancoDeDados::ordenaNomes() { // TODO transformar em template
+    bancoDeDados::ordena([](BD::dados &x) { return x.id.nome; });
 }
 
 void
-bancoDeDados::ordenaEmail()
-{
-  bancoDeDados::ordena([](BD::dados& x) { return x.id.email; });
+bancoDeDados::ordenaEmail() {
+    bancoDeDados::ordena([](BD::dados &x) { return x.id.email; });
 }
 
 void
-bancoDeDados::imprimeTudo()
-{
+bancoDeDados::imprimeTudo() {
 
-  for (auto& n : bancoInterno) {
+    for (auto &n: bancoInterno) {
 
-    std::cout << n.id.nome << '\n';
-    std::cout << n.id.email << '\n';
-    std::cout << "Chave:       " << n.chave.publica << std::endl;
-    std::cout << "Inicial:     " << n.mensagem.simples << std::endl;
+        std::cout << n.id.nome << '\n';
+        std::cout << n.id.email << '\n';
+        std::cout << "Chave:       " << n.chave.publica << std::endl;
+        std::cout << "Inicial:     " << n.mensagem.simples << std::endl;
 
-    n.mensagem.cifrada = encripta::cifraMensagem(n, "");
-    std::cout << "Cifrada:     " << n.mensagem.cifrada << std::endl;
+        n.mensagem.cifrada = encripta::cifraMensagem(n, "");
+        std::cout << "Cifrada:     " << n.mensagem.cifrada << std::endl;
 
-    std::string cifrada = n.mensagem.cifrada;
-    n.mensagem.decifrada = encripta::decifraMensagem(n, n.mensagem.cifrada);
-    std::cout << "Decifrada:   " << n.mensagem.decifrada << std::endl;
-    std::cout << std::endl;
-  }
+        std::string cifrada = n.mensagem.cifrada;
+        n.mensagem.decifrada = encripta::decifraMensagem(n, n.mensagem.cifrada);
+        std::cout << "Decifrada:   " << n.mensagem.decifrada << std::endl;
+        std::cout << std::endl;
+    }
 }
 
 void bancoDeDados::setNome(std::string &nome) {
@@ -120,6 +112,7 @@ std::string bancoDeDados::getNome(size_t indice) {
     return bancoInterno[indice].id.nome;
 }
 
+//TODO busca fuzzy logic https://github.com/typesense/typesense
 std::string bancoDeDados::getNome(std::string &email) {
     return bancoInterno[indice].id.nome; //implementar busca por email
 }
@@ -128,6 +121,7 @@ std::string bancoDeDados::getIpv4(size_t indice) {
     return bancoInterno[indice].endereco.ipv4;
 }
 
+//retorna ip a partir do email
 std::string bancoDeDados::getIpv4(std::string &email) {
     return bancoInterno[indice].endereco.ipv4; //TODO implementar busca por email
 }
