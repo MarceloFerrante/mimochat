@@ -4,11 +4,20 @@
 
 #ifndef MIMOCHAT_CONSOLE_H
 #define MIMOCHAT_CONSOLE_H
-
-
-class console {
+#include "iostream"
+#include "vector"
+#include "bancoDeDados/BD.h"
+class console
+{
+public:
+    console();
+    void draw();
+    char opcao(bancoDeDados bd);
+private:
+    void select();
+    void novelo();
+    std::string menu_principal;
 
 };
 
-
-#endif //MIMOCHAT_CONSOLE_H
+#endif // MIMOCHAT_CONSOLE_H

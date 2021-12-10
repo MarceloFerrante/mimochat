@@ -6,52 +6,68 @@
 #include "string"
 #include <iostream>
 
-void bancoDeDados::imprimeNomes() { //TODO fazer template
-  for (auto &n : bancoInterno) {
+void
+bancoDeDados::imprimeNomes()
+{ // TODO fazer template
+  for (auto& n : bancoInterno) {
     std::cout << n.id.nome << '\n';
   }
 }
 
-void bancoDeDados::imprimeEmail() {
-  for (auto &n : bancoInterno) {
+void
+bancoDeDados::imprimeEmail()
+{
+  for (auto& n : bancoInterno) {
     std::cout << n.id.email << '\n';
   }
 }
 
-void bancoDeDados::adicionaContato(BD::dados d) {
+void
+bancoDeDados::adicionaContato(BD::dados d)
+{
   bancoInterno.push_back(d);
 }
 
-void bancoDeDados::adicionaContato(BD::pessoa p) {
+void
+bancoDeDados::adicionaContato(BD::pessoa p)
+{
   BD::dados local;
   local.id.email = p.email;
 
   if (p.nome.empty())
-      p.nome = "Anônimo";
+    p.nome = "Anônimo";
 
   local.id.nome = p.nome;
   bancoInterno.push_back(local);
 }
 
-void bancoDeDados::adicionaContato(std::string email) {
-    bancoDeDados::adicionaContato(BD::pessoa{email,});
-
+void
+bancoDeDados::adicionaContato(std::string email)
+{
+    //TODO:chegar validade do email;
+  bancoDeDados::adicionaContato(BD::pessoa{ email, "" });
 }
 
 // ver
 // https://stackoverflow.com/questions/33379846/case-insensitive-sorting-of-an-array-of-strings
 //     https://en.cppreference.com/w/cpp/algorithm/lexicographical_compare
-void bancoDeDados::ordenaNomes() { // TODO transformar em template
-    bancoDeDados::ordena([](BD::dados &x) { return x.id.nome; });
+void
+bancoDeDados::ordenaNomes()
+{ // TODO transformar em template
+  bancoDeDados::ordena([](BD::dados& x) { return x.id.nome; });
 }
 
-void bancoDeDados::ordenaEmail() {
-    bancoDeDados::ordena([](BD::dados &x) { return x.id.email; });
+void
+bancoDeDados::ordenaEmail()
+{
+  bancoDeDados::ordena([](BD::dados& x) { return x.id.email; });
 }
 
-void bancoDeDados::imprimeTudo() {
+void
+bancoDeDados::imprimeTudo()
+{
 
-  for (auto &n : bancoInterno) {
+  for (auto& n : bancoInterno) {
 
     std::cout << n.id.nome << '\n';
     std::cout << n.id.email << '\n';

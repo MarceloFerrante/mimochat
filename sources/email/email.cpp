@@ -1,6 +1,8 @@
 //trata dados do email
-//oauth2
-
+/* https://github.com/google/gmail-oauth2-tools/tree/master/java
+ * oauth2 https://github.com/sirikata/liboauthcpp
+ * https://github.com/d99kris/nmail
+ */
 #include "email.h"
 namespace mimochat {
 
@@ -9,6 +11,10 @@ int conecta(int x) { return x; }
 std::string conecta(BD::dados d) {
   return d.endereco.ipv4; //
 }
+//
+//std::string conecta(bancoDeDados bd){
+//    return 0;
+//}
 
 //
 //    int enviaChave(dados d){

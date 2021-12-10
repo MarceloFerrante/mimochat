@@ -18,6 +18,9 @@
 ////------------------------------------------------------------------------------
 //
 //
+
+#include "boost/asio.hpp"
+
 //#include "cliente.h"
 //
 //#include "root_certificates.hpp"
@@ -122,3 +125,22 @@
 //    }
 //    return EXIT_SUCCESS;
 //}
+#include "cliente.h"
+
+int pingAll(bancoDeDados& bd) {
+// checa conexoes
+    using namespace boost;
+    asio::thread_pool pool(std::thread::hardware_concurrency()-1);
+
+
+    for(size_t i = 0; i < 10; ++i){ //TODO percorrer banco de dados
+
+        asio::post(pool,[i]() {
+            std::cout << "contato " << i  <<" " /*<< std::this_thread::get_id()*/ << std::endl;
+        }) ;
+//        asio::post(pool, imprime) ;
+    }
+
+    pool.join();
+    return 0;}
+

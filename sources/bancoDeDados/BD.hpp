@@ -9,3 +9,10 @@ template <class FN> void ordena(FN extrai) {
                      });
          });
 }
+
+template <class FN>
+void imprime(FN extrai) {
+    [extrai](BD::dados &a) {
+       return extrai(a);
+    };
+}
