@@ -9,7 +9,8 @@
 #include <vector>
 #include "iostream"
 
-namespace BD { //TODO remover todas as referencias externas ao BD e colocar como privada
+namespace BD {
+    //TODO remover todas as referencias externas ao BD e colocar como privada
     using namespace std;
 
     typedef struct pessoa {
@@ -39,7 +40,10 @@ namespace BD { //TODO remover todas as referencias externas ao BD e colocar como
 
 } // namespace BD
 
-class bancoDeDados { //fazer iterador para percorrer toda as entradas
+//TODO carregar e salvar em arquivo
+//fazer iterador para percorrer toda as entradas
+
+class bancoDeDados {
 public:
     bancoDeDados();
 
@@ -80,6 +84,9 @@ public:
 
     void adicionaContato(std::string &email, std::string &nome, std::string &ipv4, std::string &publica,
                          std::string &privada, std::string &mensagem);
+
+    void removeContato(size_t pos);
+    void removeContato(std::string nome);
 
 //template <class FN> void ordena(FN extrai) no include abaixo
 #include "BD.hpp" //TODO mover para o topo do arquivo. Extender classe?

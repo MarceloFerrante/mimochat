@@ -13,8 +13,9 @@ bancoDeDados::bancoDeDados() { //fazer iterador para percorrer toda as entradas
 
 void
 bancoDeDados::imprimeNomes() { // TODO fazer template
+    size_t i=0;
     for (auto &n: bancoInterno) {
-        std::cout << n.id.nome << '\n';
+        std::cout << i++ << " " << n.id.nome << '\n';
     }
 }
 
@@ -128,6 +129,8 @@ std::string bancoDeDados::getIpv4(std::string &email) {
 }
 
 void bancoDeDados::ping(std::string ipv4) {
+    if(ipv4.empty())
+        return;
     std::cout << "pingando " << ipv4 << " " /*<< std::this_thread::get_id()*/ << std::endl;
 }
 
@@ -135,12 +138,25 @@ void bancoDeDados::pingAll() {
     boost::asio::thread_pool pool(std::thread::hardware_concurrency());
 
     for (auto &n: bancoInterno) {
-        boost::asio::post(pool, [n, this]() {
-            std::string str = n.endereco.ipv4;
-            ping(str);
+        boost::asio::post(pool, [&n, this]() {
+            ping(n.endereco.ipv4);
         });
     }
     pool.join();
     return;
 }
 
+void bancoDeDados::removeContato(size_t pos) {
+    if(bancoInterno.empty())
+        return;
+    bancoInterno.erase(bancoInterno.begin()+pos);
+}
+//
+//void bancoDeDados::removeContato(std::string nome) {
+//
+//    std::vector<BD::dados>::iterator iter;
+//    iter = std::find(bancoInterno.begin(),bancoInterno.end, nome);
+//    bancoInterno.erase(iter);
+//
+//}
+//

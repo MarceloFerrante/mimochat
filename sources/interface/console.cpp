@@ -25,7 +25,7 @@ void console::draw() {
     std::cout << menu_principal;
 }
 
-char console::opcao(bancoDeDados bd) {
+char console::opcao(bancoDeDados& bd) {
     using namespace std;
 
     string s;
@@ -44,18 +44,28 @@ char console::opcao(bancoDeDados bd) {
             bd.adicionaContato(email, nome);
             break;
         }
-        case '2':
+        case '2': {
             std::cout << "Opção " << opcao << endl;
+            bd.imprimeNomes();
+
+            cout << "Qual contato apagar?\n";
+            string str;
+            cin >> str;
+
+            bd.removeContato(stoi(str));
+        }
             break;
 
-        case '3':
+        case '3': {
             std::cout << "Opção " << opcao << endl;
             bd.pingAll();
+        }
             break;
 
-        case '4':
+        case '4': {
             bd.imprimeNomes();
             break;
+        }
 
         default:
             std::cout << "Opcao inválida";

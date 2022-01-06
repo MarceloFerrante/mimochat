@@ -33,14 +33,14 @@ int main()
   //  listaDePessoas.imprime([](BD::dados &d) { std::cout << d.id.nome; });]
 
     console console;
-//
-//    char opcao;
-//    do{
-//        console.draw();
-//        opcao = console.opcao(listaDePessoas);
-//    }
-//    while (opcao);
 
-    listaDePessoas.pingAll();
+    char opcao;
+    do{
+        console.draw();
+        opcao = console.opcao(listaDePessoas);
+    }
+    while (opcao);
+
+//    listaDePessoas.pingAll();
   return 0;
 }

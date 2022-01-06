@@ -15,7 +15,7 @@ public:
 
     void draw();
 
-    char opcao(bancoDeDados bd);
+    char opcao(bancoDeDados& bd);
 
 private:
     void select();

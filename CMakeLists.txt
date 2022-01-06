@@ -4,7 +4,8 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 
-option(MIMOCHAT_BUILD_EXEC "Build exec" ON)
+option(MIMOCHAT_BUILD_EXEC "Build exec" OFF)
+option(MIMOCHAT_BUILD_VULKAN "Build vulkan client" ON)
 option(MIMOCHAT_BUILD_CLIENTE "build cliente/servidor" OFF)
 option(MIMOCHAT_BUILD_TESTS "Build tests" OFF)
 
@@ -16,6 +17,10 @@ ENDIF()
 
 if(MIMOCHAT_BUILD_EXEC)
     add_subdirectory(exec)
+ENDIF()
+
+if(MIMOCHAT_BUILD_VULKAN)
+    add_subdirectory(vulkan)
 ENDIF()
 
 if(MIMOCHAT_BUILD_CLIENTE)
