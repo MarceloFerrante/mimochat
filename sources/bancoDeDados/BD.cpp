@@ -156,10 +156,20 @@ namespace BD{
     }
 
     void bancoDeDados::removeContato(size_t pos) {
-        if(bancoInterno.empty())
+        if (bancoInterno.empty())
             return;
-        bancoInterno.erase(bancoInterno.begin()+pos);
+        bancoInterno.erase(bancoInterno.begin() + pos);
     }
+//    void bancoDeDados::populaLista() {
+//        for (auto &n: bancoInterno) {
+//            std::cout << i++ << " " << n.second.id.nome << '\n';
+//        }
+//        std::string nome = n.second.getNome(n);
+//        std::string email = n.getEmail(n);
+//    }
+
+//    void bancoDeDados::removeContato(std::string& nome){
+//    }
 //
 //void bancoDeDados::removeContato(std::string nome) {
 //

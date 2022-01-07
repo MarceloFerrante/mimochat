@@ -10,12 +10,10 @@
 #include "iostream"
 
 namespace BD {
-    //TODO remover todas as referencias externas ao BD e colocar como privada
-//    using namespace std;
 
     typedef struct pessoa {
         std::string email,
-                nome; // TODO pegar nome a partir do email
+                    nome; // TODO pegar nome a partir do email
     } pessoa;
 
     struct chaves {

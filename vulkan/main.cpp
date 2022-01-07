@@ -243,13 +243,15 @@ int main(int, char**)
                     if (ImGui::BeginPopupContextItem()) // <-- use last item id as popup id
                     {
                         ImGui::Text("Editar Contato:");
-                        ImGui::InputText("##edit", nome.begin().base(), nome.size());
-                        ImGui::InputText("##edit", email.begin().base(), email.size());
-                        if (ImGui::Button("Fechar"))
+                        ImGui::InputText("##editNome", nome.begin().base(), nome.size());
+                        ImGui::InputText("##editEmail", email.begin().base(), email.size());
+                        if (ImGui::Button("Confirmar")) {
                             ImGui::CloseCurrentPopup();
+                        }
                         ImGui::SameLine();
                         if (ImGui::Button("Cancelar"))
                             ImGui::CloseCurrentPopup();
+
                         ImGui::Separator();
 
                         std::string remover = "Remover " + nome;
@@ -264,7 +266,6 @@ int main(int, char**)
             }
             ImGui::EndChild();
 
-            ImGui::BeginGroup();
             id++;
             ImGui::SameLine();
             const ImGuiWindowFlags chatFlags = enable_extra_decorations ? ImGuiWindowFlags_MenuBar : 0;
@@ -281,8 +282,6 @@ int main(int, char**)
                 }
             }
             ImGui::EndChild();
-
-            ImGui::EndGroup();
             ImGui::PopID();
 
         }

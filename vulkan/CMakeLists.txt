@@ -58,7 +58,6 @@ add_executable(vulkanClient main.cpp
         )
 
 target_link_libraries(vulkanClient PRIVATE ${LIBRARIES})
-
 target_link_libraries(vulkanClient PRIVATE email)
 target_link_libraries(vulkanClient PRIVATE servidorCliente)
 target_link_libraries(vulkanClient PRIVATE bancoDeDados)
