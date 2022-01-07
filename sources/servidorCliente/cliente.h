@@ -9,6 +9,6 @@
 
 int enviaMensagem(BD::dados &d);
 
-int pingAll(bancoDeDados &bd);
+int pingAll(BD::bancoDeDados &bd);
 
 #endif //MIMOCHAT_CLIENTE_H

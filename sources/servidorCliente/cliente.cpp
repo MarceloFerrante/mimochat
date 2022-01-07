@@ -127,19 +127,22 @@
 //}
 #include "cliente.h"
 
-int pingAll(bancoDeDados &bd) {
+namespace BD{
+
+    int pingAll(bancoDeDados &bd) {
 // checa conexoes
-    using namespace boost;
-    asio::thread_pool pool(std::thread::hardware_concurrency());
+        using namespace boost;
+        asio::thread_pool pool(std::thread::hardware_concurrency());
 
-    for (size_t i = 0; i < 10; ++i) { //TODO percorrer banco de dados
+        for (size_t i = 0; i < 10; ++i) { //TODO percorrer banco de dados
 
-        asio::post(pool, [i]() {
-            std::cout << "contato " << i << " " /*<< std::this_thread::get_id()*/ << std::endl;
-        });
+            asio::post(pool, [i]() {
+                std::cout << "contato " << i << " " /*<< std::this_thread::get_id()*/ << std::endl;
+            });
 //        asio::post(pool, imprime) ;
-    }
+        }
 
-    pool.join();
-    return 0;
+        pool.join();
+        return 0;
+    }
 }

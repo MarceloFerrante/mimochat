@@ -11,24 +11,24 @@
 
 namespace BD {
     //TODO remover todas as referencias externas ao BD e colocar como privada
-    using namespace std;
+//    using namespace std;
 
     typedef struct pessoa {
-        string email,
+        std::string email,
                 nome; // TODO pegar nome a partir do email
     } pessoa;
 
     struct chaves {
-        string publica, privada;
+        std::string publica, privada;
     };
 
     struct rede {
-        string ipv4;
+        std::string ipv4;
         u_int16_t porta;
     };
 
     struct texto {
-        string simples, cifrada, decifrada;
+        std::string simples, cifrada, decifrada;
     };
 
     struct dados {
@@ -38,69 +38,75 @@ namespace BD {
         texto mensagem;
     };
 
-} // namespace BD
-
 //TODO carregar e salvar em arquivo
-//fazer iterador para percorrer toda as entradas
+//fazer iterador para percorrer todas as entradas
 
-class bancoDeDados {
-public:
-    bancoDeDados();
+    class bancoDeDados {
+    public:
+        bancoDeDados();
 
-    size_t size();
+        size_t size();
 
-    void imprimeNomes();
+        void imprimeNomes();
 
-    void imprimeEmail();
+        void imprimeEmail();
 
-    void ordenaNomes();
+        void ordenaNomes();
 
-    void ordenaEmail();
+        void ordenaEmail();
 
-    void imprimeTudo();
+        void imprimeTudo();
 
-    void setNome(std::string &nome);
+        void setNome(std::string &nome);
 
-    void setEmail(std::string &email);
+        void setEmail(std::string &email);
 
-    void setChavePub(std::string &key);
+        void setChavePub(std::string &key);
 
-    void setChavePriv(std::string &key);
+        void setChavePriv(std::string &key);
 
-    void setIpv4(std::string &ip);
+        void setIpv4(std::string &ip);
 
-    void ping(std::string ipv4);
-    void pingAll();
+        void ping(std::string ipv4);
+        void pingAll();
 
-    std::string getNome(size_t indice); //retorna nome do endereço []
-    std::string getNome(std::string &email); //retorna nome do email. Usar map? <nome,email>?
+        std::string getNome(size_t indice); //retorna nome do endereço []
+        std::string getNome(std::string &email); //retorna nome do email. Usar map? <nome,email>?
 
-    std::string getEmail(size_t indice);
+        std::string getEmail(size_t indice);
 
-    std::string getIpv4(size_t indice);
+        std::string getIpv4(size_t indice);
 
-    std::string getIpv4(std::string &email);
+        std::string getIpv4(std::string &email);
 
 //    void adicionaContato(BD::dados d);
-    void adicionaContato(std::string email, std::string nome);
+        void adicionaContato(std::string email, std::string nome);
 
-    void adicionaContato(std::string email);
+        void adicionaContato(std::string email);
 
-    void adicionaContato(std::string &email, std::string &nome, std::string &ipv4, std::string &publica,
-                         std::string &privada, std::string &mensagem);
+        void adicionaContato(std::string &email, std::string &nome, std::string &ipv4, std::string &publica,
+                             std::string &privada, std::string &mensagem);
 
-    void removeContato(size_t pos);
-    void removeContato(std::string nome);
+        void removeContato(size_t pos);
+        void removeContato(std::string nome);
 
-//template <class FN> void ordena(FN extrai) no include abaixo
+        template<class FN>
+        void ordena(FN extrai);
+
+        template<class FN>
+        void imprime(FN extrai);
+
+    private:
+
+        std::vector<BD::dados> bancoInterno;
+        size_t indice;
+        size_t size_;
+
+    };
+
+} // namespace BD
+
+
 #include "BD.hpp" //TODO mover para o topo do arquivo. Extender classe?
-
-private:
-
-    std::vector<BD::dados> bancoInterno;
-    size_t indice;
-    size_t size_;
-
-};
 
 #endif // MIMOCHAT_BD_H

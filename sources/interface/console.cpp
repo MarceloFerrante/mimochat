@@ -25,7 +25,7 @@ void console::draw() {
     std::cout << menu_principal;
 }
 
-char console::opcao(bancoDeDados& bd) {
+char console::opcao(BD::bancoDeDados& bd) {
     using namespace std;
 
     string s;

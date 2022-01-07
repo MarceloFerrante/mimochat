@@ -56,6 +56,7 @@ add_executable(vulkanClient main.cpp
         ${IMGUI_DIR}/imgui_tables.cpp
         ${IMGUI_DIR}/imgui_widgets.cpp
         interfaceImGui.cpp
+        vulkanHelper.cpp
         )
 
 target_link_libraries(vulkanClient PRIVATE ${LIBRARIES})

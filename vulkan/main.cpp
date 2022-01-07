@@ -24,11 +24,10 @@
 #include "bancoDeDados/BD.h"
 #include <servidorCliente/encripta.h>
 
-#include "interfaceImGui.cpp"
+#include "interfaceImGui.h"
 
 const uint16_t  janelaLargura = 600,
         janelaAltura = 720;
-
 
 int main(int, char**)
 {
@@ -138,7 +137,7 @@ int main(int, char**)
 
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-    bancoDeDados listaDePessoas;
+    BD::bancoDeDados listaDePessoas;
     menu menuPrincipal;
 
     // popula lista
@@ -152,7 +151,7 @@ int main(int, char**)
         msg =  "Mensagem de teste " + std::to_string(x);
         listaDePessoas.adicionaContato(email, nome, ipv4, pub, priv, msg);
     }
-    bool show_another_window=false;
+//    bool show_another_window=false;
 
     // Main loop
     while (!glfwWindowShouldClose(window))

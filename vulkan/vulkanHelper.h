@@ -5,6 +5,7 @@
 #ifndef MIMOCHAT_VULKANHELPER_H
 #define MIMOCHAT_VULKANHELPER_H
 
+
 static void CleanupVulkan();
 static void CleanupVulkanWindow();
 static void check_vk_result(VkResult err);
