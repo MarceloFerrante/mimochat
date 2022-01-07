@@ -21,23 +21,21 @@ option(GLFW_INSTALL "Generate installation target" OFF)
 option(GLFW_DOCUMENT_INTERNALS "Include internals in documentation" OFF)
 
 # Dear ImGui
-#find_package(imgui QUIET)
-#if (NOT imgui_FOUND)
-#    include(FetchContent)
-#    FetchContent_Declare(
-#            imgui
-#            GIT_REPOSITORY https://github.com/ocornut/imgui
-#            GIT_TAG v1.86
-#    )
-#    FetchContent_GetProperties(imgui)
-#    if (NOT imgui_POPULATED)
-#        FetchContent_Populate(ImGui)
-#        add_subdirectory(${imgui_SOURCE_DIR} ${imgui_BINARY_DIR})
-#    endif()
-#endif()
-
-set(IMGUI_DIR ../imgui)
-include_directories(${IMGUI_DIR} ${IMGUI_DIR}/backends )
+find_package(imgui QUIET)
+if (NOT imgui_FOUND)
+    include(FetchContent)
+    FetchContent_Declare(
+            imgui
+            GIT_REPOSITORY https://github.com/ocornut/imgui
+            GIT_TAG v1.86
+    )
+    FetchContent_GetProperties(imgui)
+    if (NOT imgui_POPULATED)
+        FetchContent_Populate(ImGui)
+        set(IMGUI_DIR ${imgui_SOURCE_DIR})
+        include_directories(${IMGUI_DIR} ${IMGUI_DIR}/backends )
+    endif()
+endif()
 
 # Libraries
 find_package(Vulkan REQUIRED)
@@ -60,8 +58,6 @@ add_executable(vulkanClient main.cpp
         )
 
 target_link_libraries(vulkanClient PRIVATE ${LIBRARIES})
-
-#add_executable(vulkanClient main.cpp)
 
 target_link_libraries(vulkanClient PRIVATE email)
 target_link_libraries(vulkanClient PRIVATE servidorCliente)

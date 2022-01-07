@@ -48,7 +48,6 @@ namespace BD{
         bancoInterno.push_back(local);
     }
 
-
     void bancoDeDados::adicionaContato(std::string email, std::string nome = " ") {
         if (nome.empty())
             nome = "Anônimo";
@@ -169,7 +168,5 @@ namespace BD{
 //    bancoInterno.erase(iter);
 //
 //}
-//
-
 
 }

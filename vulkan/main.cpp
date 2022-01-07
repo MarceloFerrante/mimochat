@@ -138,7 +138,7 @@ int main(int, char**)
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
     BD::bancoDeDados listaDePessoas;
-    menu menuPrincipal;
+    interface::menu menuPrincipal;
 
     // popula lista
     for (int x = 0; x < 5; ++x) {
@@ -151,20 +151,16 @@ int main(int, char**)
         msg =  "Mensagem de teste " + std::to_string(x);
         listaDePessoas.adicionaContato(email, nome, ipv4, pub, priv, msg);
     }
-//    bool show_another_window=false;
 
     // Main loop
     while (!glfwWindowShouldClose(window))
     {
-
-
         // Poll and handle events (inputs, window resize, etc.)
         // You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
         // - When io.WantCaptureMouse is true, do not dispatch mouse input data to your main application.
         // - When io.WantCaptureKeyboard is true, do not dispatch keyboard input data to your main application.
         // Generally you may always pass all inputs to dear imgui, and hide them from your application based on those two flags.
         glfwPollEvents();
-
 
         // Resize swap chain?
         if (g_SwapChainRebuild)
@@ -194,6 +190,10 @@ int main(int, char**)
         {
             if (ImGui::BeginMenu("Amigos")) {
                 menuPrincipal.Amigos(listaDePessoas);
+                ImGui::EndMenu();
+            }
+            if (ImGui::BeginMenu("Teste")) {
+                menuPrincipal.janelaChat();
                 ImGui::EndMenu();
             }
         }
@@ -264,6 +264,7 @@ int main(int, char**)
             }
             ImGui::EndChild();
 
+            ImGui::BeginGroup();
             id++;
             ImGui::SameLine();
             const ImGuiWindowFlags chatFlags = enable_extra_decorations ? ImGuiWindowFlags_MenuBar : 0;
@@ -279,8 +280,9 @@ int main(int, char**)
                     ImGui::TextWrapped(txt.c_str(), item);
                 }
             }
-
             ImGui::EndChild();
+
+            ImGui::EndGroup();
             ImGui::PopID();
 
         }

@@ -106,7 +106,6 @@ namespace BD {
 
 } // namespace BD
 
-
-#include "BD.hpp" //TODO mover para o topo do arquivo. Extender classe?
+#include "BD.hpp" //TODO Extender classe?
 
 #endif // MIMOCHAT_BD_H

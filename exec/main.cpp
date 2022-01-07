@@ -10,7 +10,7 @@ int main()
 {
   using namespace std;
 
-  bancoDeDados listaDePessoas;
+  BD::bancoDeDados listaDePessoas;
 
   // popula lista
   for (int x = 0; x < 5; ++x) {
