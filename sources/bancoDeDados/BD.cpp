@@ -11,6 +11,10 @@ bancoDeDados::bancoDeDados() { //fazer iterador para percorrer toda as entradas
     indice = 0;
 }
 
+size_t bancoDeDados::size(){
+    return bancoInterno.size();
+}
+
 void
 bancoDeDados::imprimeNomes() { // TODO fazer template
     size_t i=0;
@@ -114,6 +118,10 @@ std::string bancoDeDados::getNome(size_t indice) {
     return bancoInterno[indice].id.nome;
 }
 
+std::string bancoDeDados::getEmail(size_t indice) {
+    return bancoInterno[indice].id.email;
+}
+
 //TODO busca fuzzy logic https://github.com/typesense/typesense
 std::string bancoDeDados::getNome(std::string &email) {
     return bancoInterno[indice].id.nome; //implementar busca por email
@@ -160,3 +168,4 @@ void bancoDeDados::removeContato(size_t pos) {
 //
 //}
 //
+

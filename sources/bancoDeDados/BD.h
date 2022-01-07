@@ -47,6 +47,8 @@ class bancoDeDados {
 public:
     bancoDeDados();
 
+    size_t size();
+
     void imprimeNomes();
 
     void imprimeEmail();
@@ -72,6 +74,8 @@ public:
 
     std::string getNome(size_t indice); //retorna nome do endereço []
     std::string getNome(std::string &email); //retorna nome do email. Usar map? <nome,email>?
+
+    std::string getEmail(size_t indice);
 
     std::string getIpv4(size_t indice);
 

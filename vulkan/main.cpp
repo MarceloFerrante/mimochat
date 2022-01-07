@@ -19,418 +19,16 @@
 #include <GLFW/glfw3.h>
 #include <vulkan/vulkan.h>
 #include <string>
+#include "vulkanHelper.cpp" //FIXME separar .h/.cpp
+
+#include "bancoDeDados/BD.h"
+#include <servidorCliente/encripta.h>
+
+#include "interfaceImGui.cpp"
 
 const uint16_t  janelaLargura = 600,
         janelaAltura = 720;
 
-// [Win32] Our example includes a copy of glfw3.lib pre-compiled with VS2010 to maximize ease of testing and compatibility with old VS compilers.
-// To link with VS2010-era libraries, VS2015+ requires linking with legacy_stdio_definitions.lib, which we do using this pragma.
-// Your own project should not be affected, as you are likely to link with a newer binary of GLFW that is adequate for your version of Visual Studio.
-#if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
-#pragma comment(lib, "legacy_stdio_definitions")
-#endif
-
-//#define IMGUI_UNLIMITED_FRAME_RATE
-#ifdef _DEBUG
-#define IMGUI_VULKAN_DEBUG_REPORT
-#endif
-
-static VkAllocationCallbacks*   g_Allocator = NULL;
-static VkInstance               g_Instance = VK_NULL_HANDLE;
-static VkPhysicalDevice         g_PhysicalDevice = VK_NULL_HANDLE;
-static VkDevice                 g_Device = VK_NULL_HANDLE;
-static uint32_t                 g_QueueFamily = (uint32_t)-1;
-static VkQueue                  g_Queue = VK_NULL_HANDLE;
-static VkDebugReportCallbackEXT g_DebugReport = VK_NULL_HANDLE;
-static VkPipelineCache          g_PipelineCache = VK_NULL_HANDLE;
-static VkDescriptorPool         g_DescriptorPool = VK_NULL_HANDLE;
-
-static ImGui_ImplVulkanH_Window g_MainWindowData;
-static int                      g_MinImageCount = 2;
-static bool                     g_SwapChainRebuild = false;
-
-static void check_vk_result(VkResult err)
-{
-    if (err == 0)
-        return;
-    fprintf(stderr, "[vulkan] Error: VkResult = %d\n", err);
-    if (err < 0)
-        abort();
-}
-
-#ifdef IMGUI_VULKAN_DEBUG_REPORT
-static VKAPI_ATTR VkBool32 VKAPI_CALL debug_report(VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT objectType, uint64_t object, size_t location, int32_t messageCode, const char* pLayerPrefix, const char* pMessage, void* pUserData)
-{
-    (void)flags; (void)object; (void)location; (void)messageCode; (void)pUserData; (void)pLayerPrefix; // Unused arguments
-    fprintf(stderr, "[vulkan] Debug report from ObjectType: %i\nMessage: %s\n\n", objectType, pMessage);
-    return VK_FALSE;
-}
-#endif // IMGUI_VULKAN_DEBUG_REPORT
-
-static void SetupVulkan(const char** extensions, uint32_t extensions_count)
-{
-    VkResult err;
-
-    // Create Vulkan Instance
-    {
-        VkInstanceCreateInfo create_info = {};
-        create_info.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
-        create_info.enabledExtensionCount = extensions_count;
-        create_info.ppEnabledExtensionNames = extensions;
-#ifdef IMGUI_VULKAN_DEBUG_REPORT
-        // Enabling validation layers
-        const char* layers[] = { "VK_LAYER_KHRONOS_validation" };
-        create_info.enabledLayerCount = 1;
-        create_info.ppEnabledLayerNames = layers;
-
-        // Enable debug report extension (we need additional storage, so we duplicate the user array to add our new extension to it)
-        const char** extensions_ext = (const char**)malloc(sizeof(const char*) * (extensions_count + 1));
-        memcpy(extensions_ext, extensions, extensions_count * sizeof(const char*));
-        extensions_ext[extensions_count] = "VK_EXT_debug_report";
-        create_info.enabledExtensionCount = extensions_count + 1;
-        create_info.ppEnabledExtensionNames = extensions_ext;
-
-        // Create Vulkan Instance
-        err = vkCreateInstance(&create_info, g_Allocator, &g_Instance);
-        check_vk_result(err);
-        free(extensions_ext);
-
-        // Get the function pointer (required for any extensions)
-        auto vkCreateDebugReportCallbackEXT = (PFN_vkCreateDebugReportCallbackEXT)vkGetInstanceProcAddr(g_Instance, "vkCreateDebugReportCallbackEXT");
-        IM_ASSERT(vkCreateDebugReportCallbackEXT != NULL);
-
-        // Setup the debug report callback
-        VkDebugReportCallbackCreateInfoEXT debug_report_ci = {};
-        debug_report_ci.sType = VK_STRUCTURE_TYPE_DEBUG_REPORT_CALLBACK_CREATE_INFO_EXT;
-        debug_report_ci.flags = VK_DEBUG_REPORT_ERROR_BIT_EXT | VK_DEBUG_REPORT_WARNING_BIT_EXT | VK_DEBUG_REPORT_PERFORMANCE_WARNING_BIT_EXT;
-        debug_report_ci.pfnCallback = debug_report;
-        debug_report_ci.pUserData = NULL;
-        err = vkCreateDebugReportCallbackEXT(g_Instance, &debug_report_ci, g_Allocator, &g_DebugReport);
-        check_vk_result(err);
-#else
-        // Create Vulkan Instance without any debug feature
-        err = vkCreateInstance(&create_info, g_Allocator, &g_Instance);
-        check_vk_result(err);
-        IM_UNUSED(g_DebugReport);
-#endif
-    }
-
-    // Select GPU
-    {
-        uint32_t gpu_count;
-        err = vkEnumeratePhysicalDevices(g_Instance, &gpu_count, NULL);
-        check_vk_result(err);
-        IM_ASSERT(gpu_count > 0);
-
-        VkPhysicalDevice* gpus = (VkPhysicalDevice*)malloc(sizeof(VkPhysicalDevice) * gpu_count);
-        err = vkEnumeratePhysicalDevices(g_Instance, &gpu_count, gpus);
-        check_vk_result(err);
-
-        // If a number >1 of GPUs got reported, find discrete GPU if present, or use first one available. This covers
-        // most common cases (multi-gpu/integrated+dedicated graphics). Handling more complicated setups (multiple
-        // dedicated GPUs) is out of scope of this sample.
-        int use_gpu = 0;
-        for (int i = 0; i < (int)gpu_count; i++)
-        {
-            VkPhysicalDeviceProperties properties;
-            vkGetPhysicalDeviceProperties(gpus[i], &properties);
-            if (properties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU)
-            {
-                use_gpu = i;
-                break;
-            }
-        }
-
-        g_PhysicalDevice = gpus[use_gpu];
-        free(gpus);
-    }
-
-    // Select graphics queue family
-    {
-        uint32_t count;
-        vkGetPhysicalDeviceQueueFamilyProperties(g_PhysicalDevice, &count, NULL);
-        VkQueueFamilyProperties* queues = (VkQueueFamilyProperties*)malloc(sizeof(VkQueueFamilyProperties) * count);
-        vkGetPhysicalDeviceQueueFamilyProperties(g_PhysicalDevice, &count, queues);
-        for (uint32_t i = 0; i < count; i++)
-            if (queues[i].queueFlags & VK_QUEUE_GRAPHICS_BIT)
-            {
-                g_QueueFamily = i;
-                break;
-            }
-        free(queues);
-        IM_ASSERT(g_QueueFamily != (uint32_t)-1);
-    }
-
-    // Create Logical Device (with 1 queue)
-    {
-        int device_extension_count = 1;
-        const char* device_extensions[] = { "VK_KHR_swapchain" };
-        const float queue_priority[] = { 1.0f };
-        VkDeviceQueueCreateInfo queue_info[1] = {};
-        queue_info[0].sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
-        queue_info[0].queueFamilyIndex = g_QueueFamily;
-        queue_info[0].queueCount = 1;
-        queue_info[0].pQueuePriorities = queue_priority;
-        VkDeviceCreateInfo create_info = {};
-        create_info.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
-        create_info.queueCreateInfoCount = sizeof(queue_info) / sizeof(queue_info[0]);
-        create_info.pQueueCreateInfos = queue_info;
-        create_info.enabledExtensionCount = device_extension_count;
-        create_info.ppEnabledExtensionNames = device_extensions;
-        err = vkCreateDevice(g_PhysicalDevice, &create_info, g_Allocator, &g_Device);
-        check_vk_result(err);
-        vkGetDeviceQueue(g_Device, g_QueueFamily, 0, &g_Queue);
-    }
-
-    // Create Descriptor Pool
-    {
-        VkDescriptorPoolSize pool_sizes[] =
-                {
-                        { VK_DESCRIPTOR_TYPE_SAMPLER, 1000 },
-                        { VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1000 },
-                        { VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE, 1000 },
-                        { VK_DESCRIPTOR_TYPE_STORAGE_IMAGE, 1000 },
-                        { VK_DESCRIPTOR_TYPE_UNIFORM_TEXEL_BUFFER, 1000 },
-                        { VK_DESCRIPTOR_TYPE_STORAGE_TEXEL_BUFFER, 1000 },
-                        { VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1000 },
-                        { VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, 1000 },
-                        { VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC, 1000 },
-                        { VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC, 1000 },
-                        { VK_DESCRIPTOR_TYPE_INPUT_ATTACHMENT, 1000 }
-                };
-        VkDescriptorPoolCreateInfo pool_info = {};
-        pool_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
-        pool_info.flags = VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT;
-        pool_info.maxSets = 1000 * IM_ARRAYSIZE(pool_sizes);
-        pool_info.poolSizeCount = (uint32_t)IM_ARRAYSIZE(pool_sizes);
-        pool_info.pPoolSizes = pool_sizes;
-        err = vkCreateDescriptorPool(g_Device, &pool_info, g_Allocator, &g_DescriptorPool);
-        check_vk_result(err);
-    }
-}
-
-// All the ImGui_ImplVulkanH_XXX structures/functions are optional helpers used by the demo.
-// Your real engine/app may not use them.
-static void SetupVulkanWindow(ImGui_ImplVulkanH_Window* wd, VkSurfaceKHR surface, int width, int height)
-{
-    wd->Surface = surface;
-
-    // Check for WSI support
-    VkBool32 res;
-    vkGetPhysicalDeviceSurfaceSupportKHR(g_PhysicalDevice, g_QueueFamily, wd->Surface, &res);
-    if (res != VK_TRUE)
-    {
-        fprintf(stderr, "Error no WSI support on physical device 0\n");
-        exit(-1);
-    }
-
-    // Select Surface Format
-    const VkFormat requestSurfaceImageFormat[] = { VK_FORMAT_B8G8R8A8_UNORM, VK_FORMAT_R8G8B8A8_UNORM, VK_FORMAT_B8G8R8_UNORM, VK_FORMAT_R8G8B8_UNORM };
-    const VkColorSpaceKHR requestSurfaceColorSpace = VK_COLORSPACE_SRGB_NONLINEAR_KHR;
-    wd->SurfaceFormat = ImGui_ImplVulkanH_SelectSurfaceFormat(g_PhysicalDevice, wd->Surface, requestSurfaceImageFormat, (size_t)IM_ARRAYSIZE(requestSurfaceImageFormat), requestSurfaceColorSpace);
-
-    // Select Present Mode
-#ifdef IMGUI_UNLIMITED_FRAME_RATE
-    VkPresentModeKHR present_modes[] = { VK_PRESENT_MODE_MAILBOX_KHR, VK_PRESENT_MODE_IMMEDIATE_KHR, VK_PRESENT_MODE_FIFO_KHR };
-#else
-    VkPresentModeKHR present_modes[] = { VK_PRESENT_MODE_FIFO_KHR };
-#endif
-    wd->PresentMode = ImGui_ImplVulkanH_SelectPresentMode(g_PhysicalDevice, wd->Surface, &present_modes[0], IM_ARRAYSIZE(present_modes));
-    //printf("[vulkan] Selected PresentMode = %d\n", wd->PresentMode);
-
-    // Create SwapChain, RenderPass, Framebuffer, etc.
-    IM_ASSERT(g_MinImageCount >= 2);
-    ImGui_ImplVulkanH_CreateOrResizeWindow(g_Instance, g_PhysicalDevice, g_Device, wd, g_QueueFamily, g_Allocator, width, height, g_MinImageCount);
-}
-
-static void CleanupVulkan()
-{
-    vkDestroyDescriptorPool(g_Device, g_DescriptorPool, g_Allocator);
-
-#ifdef IMGUI_VULKAN_DEBUG_REPORT
-    // Remove the debug report callback
-    auto vkDestroyDebugReportCallbackEXT = (PFN_vkDestroyDebugReportCallbackEXT)vkGetInstanceProcAddr(g_Instance, "vkDestroyDebugReportCallbackEXT");
-    vkDestroyDebugReportCallbackEXT(g_Instance, g_DebugReport, g_Allocator);
-#endif // IMGUI_VULKAN_DEBUG_REPORT
-
-    vkDestroyDevice(g_Device, g_Allocator);
-    vkDestroyInstance(g_Instance, g_Allocator);
-}
-
-static void CleanupVulkanWindow()
-{
-    ImGui_ImplVulkanH_DestroyWindow(g_Instance, g_Device, &g_MainWindowData, g_Allocator);
-}
-
-static void FrameRender(ImGui_ImplVulkanH_Window* wd, ImDrawData* draw_data)
-{
-    VkResult err;
-
-    VkSemaphore image_acquired_semaphore  = wd->FrameSemaphores[wd->SemaphoreIndex].ImageAcquiredSemaphore;
-    VkSemaphore render_complete_semaphore = wd->FrameSemaphores[wd->SemaphoreIndex].RenderCompleteSemaphore;
-    err = vkAcquireNextImageKHR(g_Device, wd->Swapchain, UINT64_MAX, image_acquired_semaphore, VK_NULL_HANDLE, &wd->FrameIndex);
-    if (err == VK_ERROR_OUT_OF_DATE_KHR || err == VK_SUBOPTIMAL_KHR)
-    {
-        g_SwapChainRebuild = true;
-        return;
-    }
-    check_vk_result(err);
-
-    ImGui_ImplVulkanH_Frame* fd = &wd->Frames[wd->FrameIndex];
-    {
-        err = vkWaitForFences(g_Device, 1, &fd->Fence, VK_TRUE, UINT64_MAX);    // wait indefinitely instead of periodically checking
-        check_vk_result(err);
-
-        err = vkResetFences(g_Device, 1, &fd->Fence);
-        check_vk_result(err);
-    }
-    {
-        err = vkResetCommandPool(g_Device, fd->CommandPool, 0);
-        check_vk_result(err);
-        VkCommandBufferBeginInfo info = {};
-        info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-        info.flags |= VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
-        err = vkBeginCommandBuffer(fd->CommandBuffer, &info);
-        check_vk_result(err);
-    }
-    {
-        VkRenderPassBeginInfo info = {};
-        info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
-        info.renderPass = wd->RenderPass;
-        info.framebuffer = fd->Framebuffer;
-        info.renderArea.extent.width = wd->Width;
-        info.renderArea.extent.height = wd->Height;
-        info.clearValueCount = 1;
-        info.pClearValues = &wd->ClearValue;
-        vkCmdBeginRenderPass(fd->CommandBuffer, &info, VK_SUBPASS_CONTENTS_INLINE);
-    }
-
-    // Record dear imgui primitives into command buffer
-    ImGui_ImplVulkan_RenderDrawData(draw_data, fd->CommandBuffer);
-
-    // Submit command buffer
-    vkCmdEndRenderPass(fd->CommandBuffer);
-    {
-        VkPipelineStageFlags wait_stage = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
-        VkSubmitInfo info = {};
-        info.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-        info.waitSemaphoreCount = 1;
-        info.pWaitSemaphores = &image_acquired_semaphore;
-        info.pWaitDstStageMask = &wait_stage;
-        info.commandBufferCount = 1;
-        info.pCommandBuffers = &fd->CommandBuffer;
-        info.signalSemaphoreCount = 1;
-        info.pSignalSemaphores = &render_complete_semaphore;
-
-        err = vkEndCommandBuffer(fd->CommandBuffer);
-        check_vk_result(err);
-        err = vkQueueSubmit(g_Queue, 1, &info, fd->Fence);
-        check_vk_result(err);
-    }
-}
-
-static void FramePresent(ImGui_ImplVulkanH_Window* wd)
-{
-    if (g_SwapChainRebuild)
-        return;
-    VkSemaphore render_complete_semaphore = wd->FrameSemaphores[wd->SemaphoreIndex].RenderCompleteSemaphore;
-    VkPresentInfoKHR info = {};
-    info.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
-    info.waitSemaphoreCount = 1;
-    info.pWaitSemaphores = &render_complete_semaphore;
-    info.swapchainCount = 1;
-    info.pSwapchains = &wd->Swapchain;
-    info.pImageIndices = &wd->FrameIndex;
-    VkResult err = vkQueuePresentKHR(g_Queue, &info);
-    if (err == VK_ERROR_OUT_OF_DATE_KHR || err == VK_SUBOPTIMAL_KHR)
-    {
-        g_SwapChainRebuild = true;
-        return;
-    }
-    check_vk_result(err);
-    wd->SemaphoreIndex = (wd->SemaphoreIndex + 1) % wd->ImageCount; // Now we can use the next set of semaphores
-}
-
-static void glfw_error_callback(int error, const char* description)
-{
-    fprintf(stderr, "Glfw Error %d: %s\n", error, description);
-}
-
-static void ShowExampleMenuFile()
-{
-    ImGui::MenuItem("(demo menu)", NULL, false, false);
-    if (ImGui::MenuItem("New")) {}
-    if (ImGui::MenuItem("Open", "Ctrl+O")) {}
-    if (ImGui::BeginMenu("Open Recent"))
-    {
-        ImGui::MenuItem("fish_hat.c");
-        ImGui::MenuItem("fish_hat.inl");
-        ImGui::MenuItem("fish_hat.h");
-        if (ImGui::BeginMenu("More.."))
-        {
-            ImGui::MenuItem("Hello");
-            ImGui::MenuItem("Sailor");
-            if (ImGui::BeginMenu("Recurse.."))
-            {
-                ShowExampleMenuFile();
-                ImGui::EndMenu();
-            }
-            ImGui::EndMenu();
-        }
-        ImGui::EndMenu();
-    }
-    if (ImGui::MenuItem("Save", "Ctrl+S")) {}
-    if (ImGui::MenuItem("Save As..")) {}
-
-    ImGui::Separator();
-    if (ImGui::BeginMenu("Options"))
-    {
-        static bool enabled = true;
-        ImGui::MenuItem("Enabled", "", &enabled);
-        ImGui::BeginChild("child", ImVec2(0, 60), true);
-        for (int i = 0; i < 10; i++)
-            ImGui::Text("Scrolling Text %d", i);
-        ImGui::EndChild();
-        static float f = 0.5f;
-        static int n = 0;
-        ImGui::SliderFloat("Value", &f, 0.0f, 1.0f);
-        ImGui::InputFloat("Input", &f, 0.1f);
-        ImGui::Combo("Combo", &n, "Yes\0No\0Maybe\0\0");
-        ImGui::EndMenu();
-    }
-
-    if (ImGui::BeginMenu("Colors"))
-    {
-        float sz = ImGui::GetTextLineHeight();
-        for (int i = 0; i < ImGuiCol_COUNT; i++)
-        {
-            const char* name = ImGui::GetStyleColorName((ImGuiCol)i);
-            ImVec2 p = ImGui::GetCursorScreenPos();
-            ImGui::GetWindowDrawList()->AddRectFilled(p, ImVec2(p.x + sz, p.y + sz), ImGui::GetColorU32((ImGuiCol)i));
-            ImGui::Dummy(ImVec2(sz, sz));
-            ImGui::SameLine();
-            ImGui::MenuItem(name);
-        }
-        ImGui::EndMenu();
-    }
-
-    // Here we demonstrate appending again to the "Options" menu (which we already created above)
-    // Of course in this demo it is a little bit silly that this function calls BeginMenu("Options") twice.
-    // In a real code-base using it would make senses to use this feature from very different code locations.
-    if (ImGui::BeginMenu("Options")) // <-- Append!
-    {
-        static bool b = true;
-        ImGui::Checkbox("SomeOption", &b);
-        ImGui::EndMenu();
-    }
-
-    if (ImGui::BeginMenu("Disabled", false)) // Disabled
-    {
-        IM_ASSERT(0);
-    }
-    if (ImGui::MenuItem("Checked", NULL, true)) {}
-    if (ImGui::MenuItem("Quit", "Alt+F4")) {}
-}
 
 int main(int, char**)
 {
@@ -536,18 +134,38 @@ int main(int, char**)
     }
 
     // Our state
-    bool show_demo_window = true;
+    bool show_demo_window = false;
+
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+
+    bancoDeDados listaDePessoas;
+    menu menuPrincipal;
+
+    // popula lista
+    for (int x = 0; x < 5; ++x) {
+        std::string nome, email, ipv4, pub, priv, msg;
+        nome = encripta::random_string(4) + " amigo " + std::to_string(x);
+        email = encripta::random_string(4) + "@ab.com";
+        ipv4 =  "192.168.0.10" + std::to_string(x);
+        pub = encripta::random_string(16);
+        priv =  pub;
+        msg =  "Mensagem de teste " + std::to_string(x);
+        listaDePessoas.adicionaContato(email, nome, ipv4, pub, priv, msg);
+    }
+    bool show_another_window=false;
 
     // Main loop
     while (!glfwWindowShouldClose(window))
     {
+
+
         // Poll and handle events (inputs, window resize, etc.)
         // You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
         // - When io.WantCaptureMouse is true, do not dispatch mouse input data to your main application.
         // - When io.WantCaptureKeyboard is true, do not dispatch keyboard input data to your main application.
         // Generally you may always pass all inputs to dear imgui, and hide them from your application based on those two flags.
         glfwPollEvents();
+
 
         // Resize swap chain?
         if (g_SwapChainRebuild)
@@ -569,118 +187,106 @@ int main(int, char**)
         ImGui::NewFrame();
 
         // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
-        if (show_demo_window)           ImGui::ShowDemoWindow(&show_demo_window);
+        if (show_demo_window)
+            ImGui::ShowDemoWindow(&show_demo_window);
 
-        //teste
-        // 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
+        //Barra de menu Principal
+        ImGui::BeginMainMenuBar();
         {
-            static float f = 0.0f;
-            static int counter = 0;
-
-            ImGuiWindowFlags window_flags = 0;
-            window_flags |= ImGuiWindowFlags_NoTitleBar;
-            window_flags |= ImGuiWindowFlags_NoScrollbar;
-            window_flags |= ImGuiWindowFlags_NoMove;
-            window_flags |= ImGuiWindowFlags_NoResize;
-
-            // We specify a default position/size in case there's no data in the .ini file.
-            // We only do it to make the demo applications a little more welcoming, but typically this isn't required.
-            const ImGuiViewport* main_viewport = ImGui::GetMainViewport();
-            ImGui::SetNextWindowPos(ImVec2(main_viewport->WorkPos.x, main_viewport->WorkPos.y), ImGuiCond_Always);
-            ImGui::SetNextWindowSize(ImVec2(janelaLargura, janelaAltura), ImGuiCond_Always);
-
-            ImGui::Begin("MimO Chat", NULL ,window_flags);
-            {
-//                {
-//                    ImGuiWindowFlags window_flags = ImGuiWindowFlags_None;
-//
-//                    ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 5.0f);
-//                    ImGui::BeginChild("ChildR", ImVec2(0, 260), true, window_flags);
-//
-//                    if (ImGui::BeginMenu("Menu")) {
-//                        ShowExampleMenuFile();
-//                        ImGui::EndMenu();
-//                    }
-//                    ImGui::EndMenuBar();
-//                }
-
-                static int track_item = 5;
-                static bool enable_track = false;
-                static bool enable_extra_decorations = true;
-
-                ImGuiStyle& style = ImGui::GetStyle();
-                float largura = (ImGui::GetContentRegionAvail().x -  style.ItemSpacing.x) / 5;
-                if (largura < 100.0f)
-                    largura = 100.0f;
-                float altura = (ImGui::GetContentRegionAvail().y -  style.ItemSpacing.y);
-                if (altura < 100.0f)
-                    altura = 100.0f;
-
-                ImGui::PushID("##VerticalScrolling");
-
-                //janela de chat
-                ImGui::BeginGroup();
-
-                //lista de amigos
-                const char* names[] = { "Amigos", "Chat" };
-                uint16_t id = 0;
-
-                ImGui::TextUnformatted(names[0]);
-                ImGui::SameLine(largura + style.ItemSpacing.x);
-                ImGui::TextUnformatted(names[1]);
-
-                const ImGuiWindowFlags amigosFlags = enable_extra_decorations ? ImGuiWindowFlags_MenuBar : 0;
-                const ImGuiID idAmigos = ImGui::GetID((void*)(intptr_t)id);
-                const bool listaAmigos = ImGui::BeginChild(idAmigos, ImVec2(largura, altura), true, amigosFlags);
-
-                if (listaAmigos) // Avoid calling SetScrollHereY when running with culled items
-                    //TODO popular lista de amigos aqui
-                {
-                    for (int item = 0; item < 30; item++)
-                    {
-                        if (enable_track && item == track_item)
-                        {
-                            ImGui::TextColored(ImVec4(1, 1, 0, 1), "Selecionado %d", item);
-                            ImGui::SetScrollHereY(id * 0.25f); // 0.0f:top, 0.5f:center, 1.0f:bottom
-                        }
-                        else
-                        {
-                            //TODO continuar aqui
-                            static int clicked = 0;
-                            std::string x = "string";
-                            if (ImGui::Button(x.c_str()))
-                                //TODO carregar area de chat a partir do botão
-                                //TODO mudar cor do botao selecionado
-                                ImGui::TextColored(ImVec4(1, 1, 0, 1), "Selecionado %d", item);
-
-                        }
-                    }
-                }
-                ImGui::EndChild();
-
-                id++;
-                ImGui::SameLine();
-                const ImGuiWindowFlags chatFlags = enable_extra_decorations ? ImGuiWindowFlags_MenuBar : 0;
-                const ImGuiID idChat = ImGui::GetID((void*)(intptr_t)id);
-                const bool areaDeChat = ImGui::BeginChild(idChat, ImVec2(largura * 4, altura), true, chatFlags);
-
-                if(areaDeChat){
-                    for (int item = 0; item < 100; item++) {
-                        std::string txt = "%d texto do chat texto do chat texto do chat texto do "
-                                          "chat texto do chat texto do chat texto do chat texto "
-                                          "do chat texto do chat texto do chat texto do chat "
-                                          "texto do chat texto do chat texto do chat texto do chat texto do chat";
-                        ImGui::TextWrapped(txt.c_str(), item);
-                    }
-                }
-
-                ImGui::EndChild();
-                ImGui::PopID();
-
-                ImGui::EndGroup();
+            if (ImGui::BeginMenu("Amigos")) {
+                menuPrincipal.Amigos(listaDePessoas);
+                ImGui::EndMenu();
             }
-            ImGui::End();
         }
+        ImGui::EndMainMenuBar();
+
+        {
+
+        ImGuiWindowFlags window_flags = 0;
+        window_flags |= ImGuiWindowFlags_NoTitleBar;
+        window_flags |= ImGuiWindowFlags_NoScrollbar;
+        window_flags |= ImGuiWindowFlags_NoMove;
+        window_flags |= ImGuiWindowFlags_NoResize;
+
+        // We specify a default position/size in case there's no data in the .ini file.
+        // We only do it to make the demo applications a little more welcoming, but typically this isn't required.
+        const ImGuiViewport* main_viewport = ImGui::GetMainViewport();
+        ImGui::SetNextWindowPos(ImVec2(main_viewport->WorkPos.x, main_viewport->WorkPos.y), ImGuiCond_Always);
+        ImGui::SetNextWindowSize(ImVec2(janelaLargura, janelaAltura), ImGuiCond_Always);
+
+        ImGui::Begin("MimO Chat", NULL ,window_flags);
+        {
+            static bool enable_extra_decorations = true;
+
+            ImGuiStyle& style = ImGui::GetStyle();
+            float largura = (ImGui::GetContentRegionAvail().x -  style.ItemSpacing.x) / 5;
+            if (largura < 100.0f)
+                largura = 100.0f;
+            float altura = (ImGui::GetContentRegionAvail().y -  style.ItemSpacing.y);
+            if (altura < 100.0f)
+                altura = 100.0f;
+
+            ImGui::PushID("##VerticalScrolling");
+
+            //ID dos widgets
+            uint16_t id = 0;
+
+            const ImGuiWindowFlags amigosFlags = enable_extra_decorations ? ImGuiWindowFlags_MenuBar : 0;
+            const ImGuiID idAmigos = ImGui::GetID((void*)(intptr_t)id);
+            const bool listaAmigos = ImGui::BeginChild(idAmigos, ImVec2(largura, altura), true, amigosFlags);
+            {
+                //popula lista de amigos
+                for (int n = 0; n < listaDePessoas.size(); n++)
+                {
+                    std::string nome = listaDePessoas.getNome(n);
+                    std::string email = listaDePessoas.getEmail(n);
+                    ImGui::Selectable(nome.c_str()); //TODO fazer funcao pra mudar os nomes
+                    if (ImGui::BeginPopupContextItem()) // <-- use last item id as popup id
+                    {
+                        ImGui::Text("Editar Contato:");
+                        ImGui::InputText("##edit", nome.begin().base(), nome.size());
+                        ImGui::InputText("##edit", email.begin().base(), email.size());
+                        if (ImGui::Button("Fechar"))
+                            ImGui::CloseCurrentPopup();
+                        ImGui::SameLine();
+                        if (ImGui::Button("Cancelar"))
+                            ImGui::CloseCurrentPopup();
+                        ImGui::Separator();
+
+                        std::string remover = "Remover " + nome;
+                        if (ImGui::Button(remover.c_str()))
+                            ImGui::CloseCurrentPopup();
+
+                        ImGui::EndPopup();
+                    }
+                    if (ImGui::IsItemHovered())
+                        ImGui::SetTooltip("Clique com o botão direito para opções");
+                }
+            }
+            ImGui::EndChild();
+
+            id++;
+            ImGui::SameLine();
+            const ImGuiWindowFlags chatFlags = enable_extra_decorations ? ImGuiWindowFlags_MenuBar : 0;
+            const ImGuiID idChat = ImGui::GetID((void*)(intptr_t)id);
+            const bool areaDeChat = ImGui::BeginChild(idChat, ImVec2(largura * 4, altura), true, chatFlags);
+
+            if(areaDeChat){
+                for (int item = 0; item < 5; item++) {
+                    std::string txt = "%d texto do chat texto do chat texto do chat texto do "
+                                      "chat texto do chat texto do chat texto do chat texto "
+                                      "do chat texto do chat texto do chat texto do chat "
+                                      "texto do chat texto do chat texto do chat texto do chat texto do chat";
+                    ImGui::TextWrapped(txt.c_str(), item);
+                }
+            }
+
+            ImGui::EndChild();
+            ImGui::PopID();
+
+        }
+        ImGui::End();
+    }
 
         // Rendering
         ImGui::Render();
