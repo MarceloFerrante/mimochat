@@ -77,16 +77,19 @@ namespace BD {
 
         std::string getIpv4(std::string &email);
 
-//    void adicionaContato(BD::dados d);
+        void adicionaContato(std::string email);
+
         void adicionaContato(std::string email, std::string nome);
 
-        void adicionaContato(std::string email);
 
         void adicionaContato(std::string &email, std::string &nome, std::string &ipv4, std::string &publica,
                              std::string &privada, std::string &mensagem);
 
         void removeContato(size_t pos);
-        void removeContato(std::string nome);
+        void removeContato(std::string email);
+
+        void editaContato(size_t pos, std::string nome, std::string email);
+        void editaContato(std::string email, std::string nome);
 
         template<class FN>
         void ordena(FN extrai);

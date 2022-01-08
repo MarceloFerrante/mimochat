@@ -240,12 +240,14 @@ int main(int, char**)
                     std::string nome = listaDePessoas.getNome(n);
                     std::string email = listaDePessoas.getEmail(n);
                     ImGui::Selectable(nome.c_str()); //TODO fazer funcao pra mudar os nomes
+
                     if (ImGui::BeginPopupContextItem()) // <-- use last item id as popup id
-                    {
+                    {//FIXME Bug ao editar
                         ImGui::Text("Editar Contato:");
                         ImGui::InputText("##editNome", nome.begin().base(), nome.size());
                         ImGui::InputText("##editEmail", email.begin().base(), email.size());
                         if (ImGui::Button("Confirmar")) {
+                            listaDePessoas.editaContato(email,nome);
                             ImGui::CloseCurrentPopup();
                         }
                         ImGui::SameLine();
@@ -255,8 +257,10 @@ int main(int, char**)
                         ImGui::Separator();
 
                         std::string remover = "Remover " + nome;
-                        if (ImGui::Button(remover.c_str()))
+                        if (ImGui::Button(remover.c_str())){
+                            listaDePessoas.removeContato(email);
                             ImGui::CloseCurrentPopup();
+                        }
 
                         ImGui::EndPopup();
                     }

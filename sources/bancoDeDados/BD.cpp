@@ -125,7 +125,11 @@ namespace BD{
 
 //TODO busca fuzzy logic https://github.com/typesense/typesense
     std::string bancoDeDados::getNome(std::string &email) {
-        return bancoInterno[indice].id.nome; //implementar busca por email
+        for (size_t n=0; n<bancoInterno.size(); ++n) {
+            if (getEmail(n) == email) {
+                return getNome(n);
+            }
+        }
     }
 
     std::string bancoDeDados::getIpv4(size_t indice) {
@@ -160,23 +164,30 @@ namespace BD{
             return;
         bancoInterno.erase(bancoInterno.begin() + pos);
     }
-//    void bancoDeDados::populaLista() {
-//        for (auto &n: bancoInterno) {
-//            std::cout << i++ << " " << n.second.id.nome << '\n';
-//        }
-//        std::string nome = n.second.getNome(n);
-//        std::string email = n.getEmail(n);
-//    }
 
-//    void bancoDeDados::removeContato(std::string& nome){
-//    }
-//
-//void bancoDeDados::removeContato(std::string nome) {
-//
-//    std::vector<BD::dados>::iterator iter;
-//    iter = std::find(bancoInterno.begin(),bancoInterno.end, nome);
-//    bancoInterno.erase(iter);
-//
-//}
+    void bancoDeDados::removeContato(std::string email) {
+        //encontra indice
+        for (size_t n=0; n<bancoInterno.size(); ++n) {
+            if (getEmail(n) == email) {
+                removeContato(n);
+                return;
+            }
+        }
+    }
 
+    void bancoDeDados::editaContato(std::string email, std::string nome ="") {
+        for (size_t n=0; n<bancoInterno.size(); ++n) {
+            if (getEmail(n) == email) {
+                editaContato(n, email, nome);
+            }
+        }
+    }
+
+    void bancoDeDados::editaContato(size_t pos, std::string email="", std::string nome ="") {
+        indice = pos;
+        if(!nome.empty())
+            setNome(nome);
+        if(!email.empty())
+            setEmail(email);
+    }
 }
